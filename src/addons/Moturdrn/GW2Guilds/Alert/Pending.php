@@ -6,29 +6,29 @@ use XF\Alert\AbstractHandler;
 use XF\Entity\UserAlert;
 use XF\Mvc\Entity\Entity;
 
-class Guild extends AbstractHandler
+class Pending extends AbstractHandler
 {
     public function getEntityWith()
     {
-        return ['Pending'];
+        return [];
     }
 
     public function canViewAlert(UserAlert $alert, &$error = null)
     {
-        if ($alert->action == 'trophy' && !\XF::options()->enableTrophies)
-        {
-            return false;
-        }
+        return true;
+    }
 
+    public function canViewContent(Entity $entity, &$error = null)
+    {
         return true;
     }
 
     public function getOptOutActions()
     {
         return [
-            'joinreq',
-            'newguild',
-            'changeguild',
+            //'joinreq',
+            //'newguild',
+            //'changeguild',
         ];
     }
 

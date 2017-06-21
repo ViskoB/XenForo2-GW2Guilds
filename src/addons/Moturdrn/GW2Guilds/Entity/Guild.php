@@ -10,7 +10,7 @@ class Guild extends Entity
     public static function getStructure(Structure $structure)
     {
         $structure->table = 'xf_moturdrn_gw2guilds_guild';
-        $structure->shortName = 'Moturdrn:GW2Guild';
+        $structure->shortName = 'Moturdrn\GW2Guilds:Guild';
         $structure->primaryKey = 'guild_id';
         $structure->columns = [
             'guild_id' => ['type' => self::UINT, 'autoIncrement' => true],
@@ -123,6 +123,7 @@ class Guild extends Entity
                 $memberEntity->delete();
             }
         }
+        $this->_getMemberRepo()->leaderAddOrRemove($leaderId);
     }
 
     protected function _getGuildRepo()

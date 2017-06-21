@@ -14,7 +14,6 @@ class Guild extends AbstractController
     public function actionIndex(ParameterBag $parameterBag)
     {
         $visitor = \XF::visitor();
-
         $guildId = $parameterBag->guild_id;
 
         if($guildId && $guild = $this->assertGuildValid($guildId))
@@ -329,7 +328,7 @@ HTML;
         {
             $guild = \XF::em()->find('Moturdrn\GW2Guilds:Guild', $guildId);
 
-            if (!$this->canEditGuild((array)$guild))
+            if (!$this->canEditGuild($guild->toArray()))
             {
                 // throw error if user try to editing category but don't have permission :-/
                 throw $this->exception($this->noPermission("You cannot edit this Guild"));
@@ -529,14 +528,14 @@ HTML;
         if(!$guild)
             throw $this->exception($this->notFound('Guild does not exist'));
 
-        if(!$this->canEditGuild((array)$guild))
+        if(!$this->canEditGuild($guild->toArray()))
         {
             throw $this->exception($this->noPermission('You cannot edit this Guild'));
         }
 
         $visitor = \XF::visitor();
 
-        if(!$this->isGW2Guildsadmin())
+        if(!$this->isGW2Guildsadmin() && $guild['status'] == 'Inactive')
         {
             $guild->set('status', 'Pending (Change)');
             $guild->save();
@@ -546,8 +545,9 @@ HTML;
             $pending->set('user_id', $visitor['user_id']);
             $pending->set('pending_type', 'ChangeGuild');
             $pending->save();
-        }
-        else {
+        }else if(!$this->isGW2Guildsadmin()){
+            throw $this->exception($this->noPermission('You cannot set this Guild active from Pending'));
+        }else {
             $guild->set('status', 'Active');
             $guild->save();
 
@@ -632,7 +632,7 @@ HTML;
             throw $this->exception($this->notFound('Guild does not exist'));
         }
 
-        if(!$this->canEditGuild((array)$guild))
+        if(!$this->canEditGuild($guild->toArray()))
         {
             throw $this->exception($this->noPermission('You cannot edit this Guild'));
         }
@@ -749,7 +749,7 @@ HTML;
         if(!$member = \XF::em()->find('Moturdrn\GW2Guilds:Member', array($guild['guild_id'], $userId)))
             throw $this->exception($this->notFound('User not member of this Guild'));
 
-        $guildAccessLevel = $this->guildAccessLevel((array)$guild);
+        $guildAccessLevel = $this->guildAccessLevel($guild->toArray());
 
         if($guild['guildleader_userid'] == $userId)
             throw $this->exception($this->message('You cannot remove the Guild Leader. The Guild Leader or Admin must transfer or delete the Guild', 400));
@@ -817,7 +817,7 @@ HTML;
         if(!$member = \XF::em()->find('Moturdrn\GW2Guilds:Member', array($guild['guild_id'], $userId)))
             throw $this->exception($this->notFound('User not member of this Guild'));
 
-        $guildAccessLevel = $this->guildAccessLevel((array)$guild);
+        $guildAccessLevel = $this->guildAccessLevel($guild->toArray());
 
         if($guild['guildleader_userid'] == $userId)
             throw $this->exception($this->message('You cannot promote a Guild Leader further', 400));
@@ -832,12 +832,10 @@ HTML;
         if($guildAccessLevel < $requiredAccessLevel)
             throw $this->exception($this->message('You have insufficient permissions to promote this member.', 400));
 
-        if($existingPending = $this->_getMemberRepo()->getPendingRequestByUserGuild($guild['guild_id'], $userId)) {
-            foreach ($existingPending as $member) {
-                if ($memberEntity = \XF::em()->find('Moturdrn\GW2Guilds:Member', ["guild_id" => $guild['guild_id'], "user_id" => $member['user_id']])) {
-                    $memberEntity->set('state', 'accepted');
-                    $memberEntity->save();
-                }
+        if($member = $this->_getMemberRepo()->getPendingRequestByUserGuild($guild['guild_id'], $userId)) {
+            if ($memberEntity = \XF::em()->find('Moturdrn\GW2Guilds:Member', ["guild_id" => $guild['guild_id'], "user_id" => $member['user_id']])) {
+                $memberEntity->set('state', 'accepted');
+                $memberEntity->save();
             }
 
             if($pendingRequests = $this->_getPendingRepo()->getPendingJoinRequestsByGuildId($guildId))
@@ -881,7 +879,7 @@ HTML;
         if(!$member = \XF::em()->find('Moturdrn\GW2Guilds:Member', ["guild_id" => $guild['guild_id'], "user_id" => $userId]))
             throw $this->exception($this->notFound('User not member of this Guild'));
 
-        $guildAccessLevel = $this->guildAccessLevel((array)$guild);
+        $guildAccessLevel = $this->guildAccessLevel($guild->toArray());
 
         if($userId == $guild['guildleader_userid'])
             throw $this->exception($this->message('A Guild Leader cannot be demoted. The Guild Leader or an Admin must transfer the Guild', 400));
@@ -981,7 +979,7 @@ HTML;
             return false;
         }
 
-        if(\XF::visitor()->hasPermission('moturdrn_gw2guilds','admin')) {
+        if($visitor->hasPermission('moturdrn_gw2guilds','admin')) {
             return true;
         }
 

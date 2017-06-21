@@ -10,8 +10,9 @@ class Pending extends Entity
     public static function getStructure(Structure $structure)
     {
         $structure->table = 'xf_moturdrn_gw2guilds_pending';
-        $structure->shortName = 'Moturdrn:GW2GuildPending';
+        $structure->shortName = 'Moturdrn\GW2Guilds:Pending';
         $structure->primaryKey = 'pending_id';
+        $structure->contentType = 'moturdrn_gw2guilds';
         $structure->columns = [
             'pending_id' => ['type' => self::UINT, 'autoIncrement' => true],
             'guild_id' => ['type' => self::UINT, 'required' => true],
@@ -38,21 +39,100 @@ class Pending extends Entity
 
     protected function _postSave()
     {
-        $this->_alertUser();
+        $this->sendNotifications($this);
     }
 
-    protected function _alertUser()
+    protected function _postDelete()
     {
-        $pendingId = $this->get('pending_id');
-        $guildId = $this->get('guild_id');
-        $pendingType = $this->get('pending_type');
+        $this->deletePendingAlert($this);
+    }
 
-        if($pendingType == 'JoinReq'){
-            //Join Request - Guild Leader and Officers Only
-        }else if($pendingType == 'NewGuild'){
-            //New Guild - GW2GuildAdmins Only
-        }else if($pendingType =='ChangeGuild'){
-            //New Guild - GW2GuildAdmins Only
+    /**
+     * @param \Moturdrn\GW2Guilds\Entity\Pending $pending
+     */
+    public function sendNotifications(\Moturdrn\GW2Guilds\Entity\Pending $pending)
+    {
+        /** @var \Moturdrn\GW2Guilds\Service\Notifier $notifier */
+        $notifier = $this->app()->service('Moturdrn\GW2Guilds:Notifier', $pending);
+        $notifier->setNotifyAdmins($this->getAdminUserIds($this));
+        $notifier->setNotifyOfficers($this->getOfficerUserIds($this));
+        $notifier->notify(3);
+        $notifier->enqueueJobIfNeeded();
+    }
+
+    /**
+     * @param \Moturdrn\GW2Guilds\Entity\Pending $pending
+     *
+     * @return array
+     */
+    public function getAdminUserIds(\Moturdrn\GW2Guilds\Entity\Pending $pending)
+    {
+        if ($pending->pending_type != 'NewGuild' && $pending->pending_type != 'ChangeGuild')
+        {
+            return [];
         }
+
+        $adminUserIds = [];
+
+        /** @var \XF\Entity\User $users */
+        $users = \XF::finder('XF:User')->fetch()->filter(function(\XF\Entity\User $user){
+            return $user->hasPermission('moturdrn_gw2guilds', 'admin');
+        });
+
+        $users = $users->toArray();
+        if($users)
+        {
+            foreach($users as $user)
+            {
+                if($user['user_id'] != $pending['user_id'])
+                    $adminUserIds[] = $user['user_id'];
+            }
+        }
+
+        return $adminUserIds;
+    }
+
+    /**
+     * @param \Moturdrn\GW2Guilds\Entity\Pending $pending
+     *
+     * @return array
+     */
+    public function getOfficerUserIds(\Moturdrn\GW2Guilds\Entity\Pending $pending)
+    {
+        if ($pending->pending_type != 'JoinReq')
+        {
+            return [];
+        }
+
+        $officerUserIds = [];
+
+        /** @var \Moturdrn\GW2Guilds\Entity\Guild $guild */
+        $guild = \XF::em()->find('Moturdrn\GW2Guilds:Guild', $pending['guild_id']);
+
+        if($guild)
+        {
+            $officerUserIds[] = $guild['guildleader_userid'];
+
+            $guildOfficers = explode(',', $guild['guildofficer_userids']);
+            foreach($guildOfficers as $guildOfficer)
+            {
+                if($guildOfficer != $pending['user_id'])
+                    $officerUserIds[] = $guildOfficer;
+            }
+        }
+
+        return $officerUserIds;
+    }
+
+    /**
+     * @param \Moturdrn\GW2Guilds\Entity\Pending $pending
+     */
+    protected function deletePendingAlert(\Moturdrn\GW2Guilds\Entity\Pending $pending)
+    {
+        /** @var \XF\Repository\UserAlert $alertRepo */
+        $alertRepo = $this->repository('XF:UserAlert');
+        $alertRepo->fastDeleteAlertsFromUser(
+            $pending->user_id, 'moturdrn_gw2guilds', $pending->pending_id, strtolower($pending->pending_type)
+        );
     }
 }

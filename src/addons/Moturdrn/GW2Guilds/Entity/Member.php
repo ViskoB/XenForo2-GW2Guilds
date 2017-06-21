@@ -10,7 +10,7 @@ class Member extends Entity
     public static function getStructure(Structure $structure)
     {
         $structure->table = 'xf_moturdrn_gw2guilds_member';
-        $structure->shortName = 'Moturdrn:GW2GuildMember';
+        $structure->shortName = 'Moturdrn\GW2Guilds:Member';
         $structure->primaryKey = array('guild_id','user_id');
         $structure->columns = [
             'guild_id' => ['type' => self::UINT, 'required' => true],
