@@ -150,7 +150,7 @@ class Guild extends AbstractController
 					Hi {$guildLeader['username']},
 					Your registration of the Guild {$guild['guild_name']} [{$guild['guild_tag']}] has been rejected.
 
-					This may be due to the Guild not being active on Gunnar's Hold, or for other reasons.
+					This may be due to the Guild not being active on the server, or for other reasons.
 
 					{$visitor['username']}
 HTML;
@@ -168,7 +168,7 @@ HTML;
                     Hi {$guildLeader['username']},
                     The Guild {$guild['guildname']} [{$guild['guildtag']}] has been deleted from our database.
 
-                    This may be due to the Guild no longer being active on Gunnar's Hold, or for other reasons.
+                    This may be due to the Guild no longer being active on the server, or for other reasons.
 
                     {$visitor['username']}
 HTML;
@@ -702,7 +702,7 @@ HTML;
 					Hi {$guildLeader['username']},
 					Your request to make the Guild {$guild['guild_name']} [{$guild['guild_tag']}] active has been rejected.
 
-					This may be due to the Guild not being active on Gunnar's Hold, or for other reasons.
+					This may be due to the Guild not being active on the server, or for other reasons.
 
 					{$visitor['username']}
 HTML;
@@ -720,7 +720,7 @@ HTML;
                     Hi {$guildLeader['username']},
                     The Guild {$guild['guildname']} [{$guild['guildtag']}] has been marked as Inactive.
 
-                    This may be due to the Guild not being active on Gunnar's Hold, or for other reasons.
+                    This may be due to the Guild not being active on the server, or for other reasons.
 
                     {$visitor['username']}
 HTML;
