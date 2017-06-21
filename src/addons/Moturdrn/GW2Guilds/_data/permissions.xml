@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+  <permission permission_group_id="moturdrn_gw2guilds" permission_id="admin" permission_type="flag" interface_group_id="moturdrn_gw2guilds" display_order="1"/>
+  <permission permission_group_id="moturdrn_gw2guilds" permission_id="createguild" permission_type="flag" interface_group_id="moturdrn_gw2guilds" display_order="1"/>
+  <permission permission_group_id="moturdrn_gw2guilds" permission_id="joinguild" permission_type="flag" interface_group_id="moturdrn_gw2guilds" display_order="1"/>
+</permissions>

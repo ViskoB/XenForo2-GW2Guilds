@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+  <template type="public" title="moturdrn_gw2guilds_emblem" version_id="2000010" version_string="2.0.0 Alpha"><![CDATA[<img src="{$emblem_src}" />]]></template>
+  <template type="public" title="moturdrn_gw2guilds_guild_list_pending_item" version_id="2000010" version_string="2.0.0 Alpha"><![CDATA[<xf:css src="moturdrn_gw2guilds_member.less" />
+<xf:macro name="guild_block" arg-guild="!">
+    <li id="guild-{$guild.guild_id}" class="primaryContent memberListItem guildMemberListItem">
+        <div class="userAvatar">
+
+        </div>
+        <div class="memberInfo">
+            <h3 class="title">{$guild.guild_name} [{$guild.guild_tag}]</h3>
+            <div class="tagLine muted">{$guild.status}
+                <xf:if is="$controlAction is not empty">
+                    <div class="controlAction">
+                        <ul class="controlLink">
+
+                        </ul>
+                    </div>
+                </xf:if>
+            </div>
+            <div class="details muted">
+                <span class="faint"></span>
+            </div>
+        </div>
+    </li>
+</xf:macro>]]></template>
+  <template type="public" title="moturdrn_gw2guilds_index" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[<xf:title>Guilds</xf:title>
+<xf:pageaction><xf:if is="$myGuilds > 0"><xf:button href="{{link('canonical:guilds/mine')}}" class="button--cta"><span>My Guilds</span></xf:button></xf:if> <xf:if is="$canCreate"><xf:button  href="{{link('canonical:guilds/add')}}" class="button--cta" data-xf-click="overlay" icon="add"><span>Add Guild</span></xf:button></xf:if></xf:pageaction>
+<xf:css src="moturdrn_gw2guilds_list.less" />
+<xf:css src="moturdrn_gw2guilds_list_mini.less" />
+<div class="GuildListBlock">
+    <div>
+        <xf:if is="$pendingGuilds is not empty">
+            <div class="memberListMain">
+                <div class="section">
+                    <ol class="memberListItems">
+                        <li class="primaryContent">Pending Guild Requests</li>
+                        <xf:foreach loop="$pendingGuilds" value="$guild">
+                            <xf:macro template="moturdrn_gw2guilds_guild_list_pending_item" name="guild_block"
+                                      arg-guild="{$guild}"
+                            />
+                        </xf:foreach>
+                    </ol>
+                </div>
+            </div>
+        </xf:if>
+        <ol class="guildList">
+            <xf:if is="$guilds is not empty">
+                <xf:foreach loop="$guilds" value="$guild">
+                    <xf:macro template="moturdrn_gw2guilds_list_item" name="guild_block"
+                              arg-guild="{$guild}"
+                    />
+                </xf:foreach>
+            <xf:else />
+                <li class="GuildListItem">No Guilds to Display!</li>
+            </xf:if>
+        </ol>
+    </div>
+</div>]]></template>
+  <template type="public" title="moturdrn_gw2guilds_list.less" version_id="2000010" version_string="2.0.0 Alpha"><![CDATA[.GuildListMain
+{
+    margin-left: 230px;
+}
+
+.GuildListItem
+{
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    word-wrap: normal;
+    border-bottom: xf-intensify(@xf-borderColor, 4%) 1px solid;
+    background-color: @xf-paletteNeutral1;
+}
+
+.GuildListItem .GuildListBlock
+{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.GuildListItem .GuildListBlockInner
+{
+    padding: 10px;
+}
+
+.GuildListItem .GuildEmblem
+{
+    width: 70px;
+}
+
+.GuildListItem .GuildEmblem .GuildListBlockInner
+{
+    padding: 5px;
+    position: relative;
+}
+
+.GuildListItem .GuildEmblem img.GuildIcon
+{
+    width: 64px;
+    height: 64px;
+}
+
+.GuildListItem .GuildMain
+{
+    width: auto;
+}
+
+.GuildListItem .GuildMain .title
+{
+    font-size: 11pt;
+    font-weight: bold;
+}
+
+.GuildListItem .GuildMain .guildTitle
+{
+    display: inline-block;
+}
+
+.GuildListItem .GuildMain .GuildDetails
+{
+    font-size: 11px;
+}
+
+.GuildListItem .GuildMain .tagLine
+{
+    font-size: 11px;
+    margin-top: .5em;
+}
+
+.GuildListBlock .GuildInfo
+{
+    width: 200px;
+    font-size: 11px;
+}
+
+.GuildListBlock .GuildInfo .GuildListBlockInner dl
+{
+    overflow: hidden;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+}
+
+.GuildListBlock .GuildInfo .GuildListBlockInner dt
+{
+    float: left;
+    max-width: 100%;
+    margin-right: 5px;
+}
+
+.GuildListBlock .GuildInfo .GuildListBlockInner dd
+{
+    float: right;
+    text-align: right;
+    max-width: 100%;
+}
+
+.GuildListItem.Inactive
+{
+    opacity: 0.4;
+    filter: alpha(opacity=1);
+}]]></template>
+  <template type="public" title="moturdrn_gw2guilds_list_item" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[<xf:macro name="guild_block" arg-guild="!">
+    <li class="GuildListItem {$guild.status}" id="guild-{$guild.guild_id}">
+        <div class="GuildListBlock GuildEmblem">
+            <div class="GuildListBlockInner">
+                {{guild_emblem($guild, 64)}}
+            </div>
+        </div>
+        <div class="GuildListBlock GuildMain">
+            <div class="GuildListBlockInner">
+                <h3 class="title">
+                    <a name="guild-{$guild.guild_id}"></a><a href="{{link('canonical:guilds', $guild)}}" class="TeamIcon">{$guild.guild_name}</a>
+                    <div class="guildTitle">
+                        [{$guild.guild_tag}]
+                    </div>
+                </h3>
+                <xen:if is="{$guild.guild_website}">
+                    <div class="tagLine">
+                        <a href="{$guild.guild_website}">{$guild.guild_website}</a>
+                    </div>
+                </xen:if>
+                <div class="tagLine">
+                    {{
+                    snippet($guild.guild_recruitment, 300, {'stripQuote': true})
+                    }}
+                </div>
+                <div class="tagLine">
+                    <xf:if is="{$guild.canEdit}">
+                        <xf:if is="{$guild.status} == 'Active' || {$guild.status} == 'Pending (Change)'">
+                            <xf:button href="{{link('canonical:guilds/inactivate', $guild)}}" class="button--cta button" data-xf-click="overlay"><span>Set Inactive</span></xf:button>
+                        </xf:if>
+                        <xf:if is="{$guild.status} == 'Inactive'">
+                            <xf:button href="{{link('canonical:guilds/activate', $guild)}}" class="button--cta button" data-xf-click="overlay"><span>Set Active</span></xf:button>
+                        </xf:if>
+                    </xf:if>
+                    <xf:if is="{$guild.canJoin}">
+                        <xf:button href="{{link('canonical:guilds/join', $guild)}}" class="button--cta button" data-xf-click="overlay"><span>Join</span></xf:button>
+                    </xf:if>
+                    <xf:if is="{$guild.canLeave}">
+                        <xf:button href="{{link('canonical:guilds/leave', $guild)}}" class="button--cta button" data-xf-click="overlay"><span>Leave</span></xf:button>
+                    </xf:if>
+                    <xf:if is="{$guild.canEdit}">
+                        <xf:button href="{{link('canonical:guilds/edit', $guild)}}" class="button--cta button" data-xf-click="overlay"><span>Edit</span></xf:button>
+                    </xf:if>
+                    <a href="{{link('canonical:guilds/roster', $guild)}}" class="button--cta button" data-xf-click="overlay"><span>Roster<xf:if is="{$guild.canEdit} && {$guild.pending_count} > 0"> ({$guild.pending_count})</xf:if></span></a>
+                    <xf:if is="{$guild.canTransfer}">
+                        <xf:button href="{{link('canonical:guilds/transfer', $guild)}}" class="button--cta button" data-xf-click="overlay"><span>Transfer</span></xf:button>
+                    </xf:if>
+                    <xf:if is="{$guild.canDelete}">
+                        <xf:button href="{{link('canonical:guilds/delete', $guild)}}" class="button--cta button" data-xf-click="overlay"><span>Delete</span></xf:button>
+                    </xf:if>
+                </div>
+            </div>
+        </div>
+        <div class="GuildListBlock GuildInfo">
+            <div class="GuildListBlockInner">
+                <dl><dt>Members:</dt> <dd>{$guild.members}</dd></dl>
+                <dl><dt>GH.eu Members:</dt> <dd>{$guild.member_count}</dd></dl>
+                <dl><dt>PvE:</dt> <dd>{$guild.PvE}</dd></dl>
+                <dl><dt>PvP:</dt> <dd>{$guild.PvP}</dd></dl>
+                <dl><dt>WvW:</dt> <dd>{$guild.WvW}</dd></dl>
+                <dl><dt>Casual:</dt> <dd>{$guild.Casual}</dd></dl>
+                <dl><dt>Status:</dt> <dd>{$guild.status}</dd></dl>
+            </div>
+        </div>
+    </li>
+</xf:macro>]]></template>
+  <template type="public" title="moturdrn_gw2guilds_list_mini.less" version_id="2000010" version_string="2.0.0 Alpha"><![CDATA[.miniGuildList li
+{
+  margin-bottom: 1em;
+}
+
+.miniGuildList .guildTitle
+{
+  font-weight: bold;
+  margin-right: 5px;
+}]]></template>
+  <template type="public" title="moturdrn_gw2guilds_member.less" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[.memberListItems li
+{
+  list-style: none;
+}
+
+.memberListMain .section
+{
+  margin: 0;
+}
+.memberListMain
+{
+  overflow: hidden;
+  margin-bottom: 10px;
+  height: auto;
+  margin: 10px auto;
+}
+
+.memberListMain .guildMemberListItem
+{
+  background-color: xf-intensify(@xf-contentBg, 3.5%);
+  padding: 10px;
+  border-bottom: xf-intensify(@xf-borderColor, 4%) 1px solid;
+  float: left;
+  margin: 0 5px 5px 0;
+  box-sizing: border-box;
+  width: 300px;
+  max-width: 100%;
+  padding: 5px;
+  box-shadow: 1px 1px 3px rgba(0,0,0, 0.25);
+  border: xf-diminish(@xf-borderColor, 3%) 1px solid ;
+  border-radius: 5px;
+  display: table;
+  table-layout: fixed;
+}
+
+.memberListMain .guildMemberListItem .prefix
+{
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  word-wrap: normal;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+}
+
+.memberListMain .guildMemberListItem .memberInfo
+{
+  //height: calc(96 + @avatar.padding-top + @avatar.padding-bottom + @avatar.border-top-width + @avatar.border-bottom-width);
+  padding-left: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.memberListMain .guildMemberListItem .memberInfo .controlPopup
+{
+  top: 5px;
+  display: inline-block;
+  float: right;
+}
+.memberListMain .guildMemberListItem .userAvatar
+{
+  float: left;
+}
+
+.memberListMain .guildMemberListItem .userAvatar img
+{
+  display: block;
+  width: 96px;
+  height: 96px;
+}
+
+.memberListMain .guildMemberListItem .userAvatar .resourceIcon img
+{
+  background-color: rgb(237, 237, 237);
+  padding: 2px;
+  border: 1px solid xf-intensify(@xf-paletteNeutral1, 14%);
+  border-radius: @xf-borderRadiusSmall;
+}
+
+.memberListMain .guildMemberListItem .title
+{
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 18px;
+  max-height: 36px;
+  overflow: hidden;
+  padding: 3px 0;
+}
+
+.memberListMain .guildMemberListItem .tagLine
+{
+  font-size: 11px;
+  line-height: 14px;
+  max-height: 28px;
+  overflow: hidden;
+}
+
+.memberListMain .guildMemberListItem .details
+{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-top: 10px;
+  font-size: 11px;
+  margin-left: 5px;
+  word-wrap: normal;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+}
+
+.controlAction .controlLink li
+{
+  display: inline-block;
+}
+.controlAction .controlLink li:last-child
+{
+  float: right;
+}
+.assignForm .button
+{
+  position: relative;
+  top: -2px;
+}]]></template>
+  <template type="public" title="moturdrn_gw2guilds_member_list_item" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[<xf:macro name="member_block" arg-user="!" arg-guild="!">
+    <li id="member-{$guild.guild_id}-{$user.user_id}" class="memberListItem guildMemberListItem">
+        <div class="userAvatar">
+            <xf:avatar user="{$user.user}" size="m" notooltip="true" />
+        </div>
+        <div class="memberInfo">
+            <h3 class="title"><xf:username user="$user.user" /></h3>
+            <xf:if is="{$showAccNames}"><div class="tagLine">{$user.GW2AccName}</div></xf:if>
+            <div class="tagLine muted">
+            </div>
+            <div class="details muted">
+                <span class="faint">Last Active: <xf:date time="{$user.user.last_activity}" /></span>
+            </div>
+        </div>
+    </li>
+</xf:macro>]]></template>
+  <template type="public" title="moturdrn_gw2guilds_roster" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[<xf:title>{$guild.guild_name} [{$guild.guild_tag}]</xf:title>
+<xf:css src="moturdrn_gw2guilds_list.less" />
+<div class="GuildListBlock">
+    <div>
+        <ol class="guildList">
+            <xf:macro template="moturdrn_gw2guilds_list_item" name="guild_block"
+                      arg-guild="{$guild}"
+            />
+        </ol>
+    </div>
+</div>
+<xf:css src="moturdrn_gw2guilds_member.less" />
+<div class="GuildListBlock">
+    <div>
+        <ol class="guildList">
+            <xf:if is="$guild.accessLevel >= 30">
+                <div class="pageNavLinkGroup">
+                    <xf:form action="{{ link('guilds/members/assign', $guild) }}" class="block" attributes="{{ widget_data($widget, true) }}">
+                        <div class="block-container">
+                            <h3 class="block-minorHeader">{$title}</h3>
+                            <div class="block-body block-row">
+                                <label for="username">Enter a username below to add them to the Guild.</label>
+                                <xf:textbox name="username" placeholder="{{ phrase('name...') }}" ac="single" data-autosubmit="true" autocomplete="off" />
+                                <input type="submit" value="Add" class="button primary" accesskey="s" />
+                            </div>
+                        </div>
+                    </xf:form>
+                </div>
+                <div class="block-container">
+                <div class="memberListMain">
+                    <div>
+                        <ol class="memberListItems">
+                            <li class="primaryContent">Pending</li>
+                            <xf:if is="$pending is not empty">
+                                <xf:foreach loop="$pending" value="$user">
+                                    <xf:macro template="moturdrn_gw2guilds_member_list_item" name="member_block"
+                                              arg-user="{$user}"
+                                              arg-guild="{$guild}"
+                                    />
+                                </xf:foreach>
+                                <xf:else />
+                                <li class="primaryContent">There are no pending join requests</li>
+                            </xf:if>
+                        </ol>
+                    </div>
+                </div>
+                </div>
+            </xf:if>
+            <div class="block-container">
+            <div class="memberListMain">
+                <div>
+                    <ol class="memberListItems">
+                        <li class="primaryContent">Leader</li>
+                        <xf:if is="$leader is not empty">
+                            <xf:foreach loop="$leader" value="$user">
+                                <xf:macro template="moturdrn_gw2guilds_member_list_item" name="member_block"
+                                          arg-user="{$user}"
+                                          arg-guild="{$guild}"
+                                />
+                            </xf:foreach>
+                        </xf:if>
+                    </ol>
+                </div>
+            </div>
+            <div class="memberListMain">
+                <div>
+                    <ol class="memberListItems">
+                        <li class="primaryContent">Officers</li>
+                        <xf:if is="$officers is not empty">
+                            <xf:foreach loop="$officers" value="$user">
+                                <xf:macro template="moturdrn_gw2guilds_member_list_item" name="member_block"
+                                          arg-user="{$user}"
+                                          arg-guild="{$guild}"
+                                />
+                            </xf:foreach>
+                            <xf:else />
+                            <li class="primaryContent">There are no Guild Officers</li>
+                        </xf:if>
+                    </ol>
+                </div>
+            </div>
+            <div class="memberListMain">
+                <div>
+                    <ol class="memberListItems">
+                        <li class="primaryContent">Members</li>
+                        <xf:if is="$members is not empty">
+                            <xf:foreach loop="$members" value="$user">
+                                <xf:macro template="moturdrn_gw2guilds_member_list_item" name="member_block"
+                                          arg-user="{$user}"
+                                          arg-guild="{$guild}"
+                                />
+                            </xf:foreach>
+                            <xf:else />
+                            <li class="primaryContent">There are no ordinary members</li>
+                        </xf:if>
+                    </ol>
+                </div>
+            </div>
+            </div>
+        </ol>
+    </div>
+</div>]]></template>
+  <template type="public" title="moturdrn_gw2guilds_view" version_id="2000010" version_string="2.0.0 Alpha"><![CDATA[<xf:title>{$guild.guild_name} [{$guild.guild_tag}]</xf:title>
+<a href="{{ link('canonical:guilds') }}">< Back</a><br />
+<a href="{$guild.guild_website}">{$guild.guild_website}</a><br />
+{{ bb_code($guild.guild_recruitment, 'post') }}]]></template>
+</templates>

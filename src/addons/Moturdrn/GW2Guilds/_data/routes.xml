@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<routes>
+  <route route_type="public" route_prefix="guilds" format=":int&lt;guild_id,guild_name&gt;/:page" controller="Moturdrn\GW2Guilds:Guild" context="guilds"/>
+</routes>

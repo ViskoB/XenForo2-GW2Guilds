@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phrases>
+  <phrase title="permission.moturdrn_gw2guilds_admin" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Can Administrate Guilds]]></phrase>
+  <phrase title="permission.moturdrn_gw2guilds_createguild" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Can Create Guilds]]></phrase>
+  <phrase title="permission.moturdrn_gw2guilds_joinguild" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Can Join Guilds]]></phrase>
+  <phrase title="permission_interface.moturdrn_gw2guilds" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[[Moturdrn] GW2 Guilds]]></phrase>
+</phrases>

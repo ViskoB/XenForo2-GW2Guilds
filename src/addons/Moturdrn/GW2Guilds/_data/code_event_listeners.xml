@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<code_event_listeners>
+  <listener event_id="templater_setup" execute_order="10" callback_class="Moturdrn\GW2Guilds\Listener" callback_method="templaterSetup" active="1" description="Guild Emblem Helper"/>
+</code_event_listeners>
