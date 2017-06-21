@@ -81,14 +81,13 @@ class Guild extends AbstractController
 
         $canCreate = $this->canCreateGuild();
 
-        //$pendingGuilds = $guildModel->getPendingGuilds();
-
-        //$pendingGuilds = $guildModel->prepareGuilds($pendingGuilds);
+        $pendingGuilds = $this->_getGuildRepo()->getPendingGuilds();
+        $pendingGuilds = $this->prepareGuilds($pendingGuilds);
 
         $viewParams = array(
             'guilds'	=> $guilds,
             'canCreate' => $canCreate,
-            'pendingGuilds' => array(),
+            'pendingGuilds' => $pendingGuilds,
             'isGW2GuildsAdmin' => $this->isGW2GuildsAdmin(),
         );
 
@@ -161,9 +160,6 @@ HTML;
             }
             elseif($guild['guildleader_userid'] != $visitor['user_id'])
             {
-                /*
-                $guildLeader = $this->_getUserModel()->getUserById($guild['guildleader_userid']);
-
                 $messageText = <<<HTML
                     Hi {$guildLeader['username']},
                     The Guild {$guild['guildname']} [{$guild['guildtag']}] has been deleted from our database.
@@ -173,41 +169,9 @@ HTML;
                     {$visitor['username']}
 HTML;
 
-
-                $input = array(
-                    'recipients' => $guildLeader['username'],
-                    'title' => 'Guild Deleted',
-                    'open_invite' => 0,
-                    'conversation_locked' => 0,
-                    'attachment_hash' => '',
-                    'message' => $messageText,
-                );
-
-                $conversationDw = XenForo_DataWriter::create('XenForo_DataWriter_ConversationMaster');
-                $conversationDw->setExtraData(XenForo_DataWriter_ConversationMaster::DATA_ACTION_USER, $visitor->toArray());
-                $conversationDw->setExtraData(XenForo_DataWriter_ConversationMaster::DATA_MESSAGE, $input['message']);
-                $conversationDw->set('user_id', $visitor['user_id']);
-                $conversationDw->set('username', $visitor['username']);
-                $conversationDw->set('title', $input['title']);
-                $conversationDw->set('open_invite', $input['open_invite']);
-                $conversationDw->set('conversation_open', $input['conversation_locked'] ? 0 : 1);
-                $conversationDw->addRecipientUserNames(explode(',', $input['recipients'])); // checks permissions
-
-                $messageDw = $conversationDw->getFirstMessageDw();
-                $messageDw->set('message', $input['message']);
-                $messageDw->setExtraData(XenForo_DataWriter_ConversationMessage::DATA_ATTACHMENT_HASH, $input['attachment_hash']);
-
-                $conversationDw->preSave();
-
-                $conversationDw->save();
-                $conversation = $conversationDw->getMergedData();
-
-                $this->getModelFromCache('XenForo_Model_Draft')->deleteDraft('conversation');
-
-                $this->getModelFromCache('XenForo_Model_Conversation')->markConversationAsRead(
-                    $conversation['conversation_id'], XenForo_Visitor::getUserId(), XenForo_Application::$time
-                );
-                */
+                $creator = $this->setupConversationCreate($guildLeader['username'], 'Guild Deleted', $messageText);
+                $creator->save();
+                $this->finalizeConversationCreate($creator);
             }
 
             return $this->redirect($this->buildLink('guilds'), 'Guild Deleted');
@@ -364,7 +328,6 @@ HTML;
         if ($guildId)
         {
             $guild = \XF::em()->find('Moturdrn\GW2Guilds:Guild', $guildId);
-            //$guild = $this->_getGuildRepo()->findGuildById($guildId);
 
             if (!$this->canEditGuild((array)$guild))
             {
@@ -408,7 +371,6 @@ HTML;
         $writer->set('Casual', $this->filter('Casual', 'str'));
         $writer->set('members', $this->filter('members', 'str'));
         $writer->set('last_modified', $modified_date);
-        //$writer->PreSave();
         $writer->save();
 
         $guild = $writer;
@@ -419,7 +381,6 @@ HTML;
             $writer->set('guild_id', $guild['guild_id']);
             $writer->set('user_id', $visitor['user_id']);
             $writer->set('state', 'accepted');
-            //$writer->PreSave();
             $writer->save();
         }
 
@@ -694,10 +655,10 @@ HTML;
             }
         }
 
+        $guildLeader = \XF::em()->find('XF:User',$guild['guildleader_userid']);
+
         if($guild['status'] == 'Pending (Changed)' && $guild['guildleader_userid'] != $visitor['user_id'])
         {
-            $guildLeader = \XF::em()->find('XF:User',$guild['guildleader_userid']);
-
             $messageText = <<<HTML
 					Hi {$guildLeader['username']},
 					Your request to make the Guild {$guild['guild_name']} [{$guild['guild_tag']}] active has been rejected.
@@ -713,9 +674,6 @@ HTML;
         }
         elseif($guild['guildleader_userid'] != $visitor['user_id'])
         {
-            /*
-            $guildLeader = $this->_getUserModel()->getUserById($guild['guildleader_userid']);
-
             $messageText = <<<HTML
                     Hi {$guildLeader['username']},
                     The Guild {$guild['guildname']} [{$guild['guildtag']}] has been marked as Inactive.
@@ -725,41 +683,9 @@ HTML;
                     {$visitor['username']}
 HTML;
 
-
-            $input = array(
-                'recipients' => $guildLeader['username'],
-                'title' => 'Guild Marked Inactive',
-                'open_invite' => 0,
-                'conversation_locked' => 0,
-                'attachment_hash' => '',
-                'message' => $messageText,
-            );
-
-            $conversationDw = XenForo_DataWriter::create('XenForo_DataWriter_ConversationMaster');
-            $conversationDw->setExtraData(XenForo_DataWriter_ConversationMaster::DATA_ACTION_USER, $visitor->toArray());
-            $conversationDw->setExtraData(XenForo_DataWriter_ConversationMaster::DATA_MESSAGE, $input['message']);
-            $conversationDw->set('user_id', $visitor['user_id']);
-            $conversationDw->set('username', $visitor['username']);
-            $conversationDw->set('title', $input['title']);
-            $conversationDw->set('open_invite', $input['open_invite']);
-            $conversationDw->set('conversation_open', $input['conversation_locked'] ? 0 : 1);
-            $conversationDw->addRecipientUserNames(explode(',', $input['recipients'])); // checks permissions
-
-            $messageDw = $conversationDw->getFirstMessageDw();
-            $messageDw->set('message', $input['message']);
-            $messageDw->setExtraData(XenForo_DataWriter_ConversationMessage::DATA_ATTACHMENT_HASH, $input['attachment_hash']);
-
-            $conversationDw->preSave();
-
-            $conversationDw->save();
-            $conversation = $conversationDw->getMergedData();
-
-            $this->getModelFromCache('XenForo_Model_Draft')->deleteDraft('conversation');
-
-            $this->getModelFromCache('XenForo_Model_Conversation')->markConversationAsRead(
-                $conversation['conversation_id'], XenForo_Visitor::getUserId(), XenForo_Application::$time
-            );
-            */
+            $creator = $this->setupConversationCreate($guildLeader['username'], 'Guild Marked Inactive', $messageText);
+            $creator->save();
+            $this->finalizeConversationCreate($creator);
         }
 
         return $this->redirect($this->buildLink('guilds'), 'Guild status changed');
