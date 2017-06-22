@@ -48,6 +48,10 @@ class Member extends Entity
             $pendingEntity->set('user_id', $this->get('user_id'));
             $pendingEntity->set('pending_type', 'JoinReq');
             $pendingEntity->save();
+        }else if($state == 'accepted')
+        {
+            if($pendingEntity = \XF::em()->find('Moturdrn\GW2Guilds:Pending', ["guild_id" => $this->get('guild_id'), "user_id" => $this->get('user_id'), "pending_type" => 'JoinReq']))
+                $pendingEntity->delete();
         }
     }
 

@@ -539,12 +539,6 @@ HTML;
         {
             $guild->set('status', 'Pending (Change)');
             $guild->save();
-
-            $pending = \XF::em()->create('Moturdrn\GW2Guilds:Pending');
-            $pending->set('guild_id', $guild['guild_id']);
-            $pending->set('user_id', $visitor['user_id']);
-            $pending->set('pending_type', 'ChangeGuild');
-            $pending->save();
         }else if(!$this->isGW2Guildsadmin()){
             throw $this->exception($this->noPermission('You cannot set this Guild active from Pending'));
         }else {
