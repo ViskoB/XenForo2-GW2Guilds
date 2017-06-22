@@ -98,7 +98,7 @@ class Guild extends Entity
 
             if($guildStatus == 'Inactive' && $this->getPreviousValue('status') == 'Active'){
                 //Remove pending users
-                if($pendingMembers = $this->_getMemberRepo()->findPendingRequestsByGuildId($guildId)){
+                if($pendingMembers = $pendingRepo->findPendingJoinRequestsByGuildId($guildId)){
                     foreach($pendingMembers as $pendingMember){
                         $pendingMember->delete();
                     }

@@ -25,6 +25,16 @@ class Pending extends Repository
         $finder = $this->finder('Moturdrn\GW2Guilds:Pending');
         $finder
             ->where('guild_id',$guildId)
+            ->where(['pending_type','JoinReq']);
+
+        return $finder->fetch();
+    }
+
+    public function findPendingJoinRequestsByGuildId($guildId)
+    {
+        $finder = $this->finder('Moturdrn\GW2Guilds:Pending');
+        $finder
+            ->where('guild_id',$guildId)
             ->where(['pending_type','!=','JoinReq']);
 
         return $finder->fetch();
