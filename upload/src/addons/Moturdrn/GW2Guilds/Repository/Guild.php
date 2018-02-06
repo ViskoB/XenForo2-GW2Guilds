@@ -77,6 +77,10 @@ class Guild extends Repository
         return $this->db()->fetchAll("SELECT g.* FROM xf_moturdrn_gw2guilds_member as m JOIN xf_moturdrn_gw2guilds_guild as g on g.guild_id = m.guild_id WHERE g.status = 'Active' AND m.user_id = ?", $userId);
     }
 
+    public function getActiveGuildsOfLeader($userId){
+        return $this->db()->fetchAll("SELECT g.* FROM xf_moturdrn_gw2guilds_guild as g WHERE g.status = 'Active' AND g.guildleader_userid = ?", $userId);
+    }
+
     /**
      * Ensures that the base fields/relationships are all set to make a "valid" Guild
      * once saved.
