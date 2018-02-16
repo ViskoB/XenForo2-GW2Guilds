@@ -15,6 +15,7 @@ class Member extends Entity
         $structure->columns = [
             'guild_id' => ['type' => self::UINT, 'required' => true],
             'user_id' => ['type' => self::UINT, 'required' => true],
+            'username' => ['type' => self::STR, 'required' => true],
             'state' => ['type' => self::BINARY, 'allowedValues' => ['pending','accepted'], 'default' => 'pending'],
             'join_date' => ['type' => self::UINT, 'default' => \XF::$time]
         ];

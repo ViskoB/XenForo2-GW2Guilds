@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <phrases>
+  <phrase title="alert_opt_out.moturdrn_gw2guilds_changeguild" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[[Moturdrn] GW2 Guilds - Guild Change Requests]]></phrase>
+  <phrase title="alert_opt_out.moturdrn_gw2guilds_joinreq" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[[Moturdrn] GW2 Guilds - Guild Join Requests]]></phrase>
+  <phrase title="alert_opt_out.moturdrn_gw2guilds_newguild" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[[Moturdrn] GW2 Guilds - New Guild Requests]]></phrase>
+  <phrase title="moturdrn_gw2guilds_add_guild" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Add Guild]]></phrase>
+  <phrase title="moturdrn_gw2guilds_current_number_of_members" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Current number of members]]></phrase>
+  <phrase title="moturdrn_gw2guilds_delete_guild" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Delete Guild]]></phrase>
+  <phrase title="moturdrn_gw2guilds_edit_guild" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Edit Guild]]></phrase>
+  <phrase title="moturdrn_gw2guilds_guilds" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Guilds]]></phrase>
+  <phrase title="moturdrn_gw2guilds_no_guilds_to_display" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[No Guilds to display]]></phrase>
+  <phrase title="moturdrn_gw2guilds_provide_an_in_depth_description" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Provide an in depth description of your Guild]]></phrase>
+  <phrase title="moturdrn_gw2guilds_the_name_of_your_guild" version_id="2000310" version_string="2.0.3 Alpha" global_cache="1"><![CDATA[The name of your Guild]]></phrase>
+  <phrase title="moturdrn_gw2guilds_transfer_guild" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Transfer Guild]]></phrase>
+  <phrase title="moturdrn_gw2guilds_x_created_guild_y" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[{user} created Guild {title} for approval]]></phrase>
+  <phrase title="moturdrn_gw2guilds_x_requests_guild_y_active" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[{user} has requested Guild {title} be made active]]></phrase>
+  <phrase title="moturdrn_gw2guilds_x_sending_request_to_join_guild_y" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[{user} sending request to join Guild {title}]]></phrase>
+  <phrase title="moturdrn_gw2guilds_you_are_about_to_delete" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[You are about to delete]]></phrase>
+  <phrase title="moturdrn_gw2guilds_you_are_about_to_transfer" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[You are about to Transfer]]></phrase>
+  <phrase title="moturdrn_gw2guilds_your_guilds_tag" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Your Guild's tag (do not include the square brackets, i.e. enter MM rather than [MM])]]></phrase>
+  <phrase title="moturdrn_gw2guilds_your_guilds_website" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Your Guild's Website]]></phrase>
+  <phrase title="nav.guilds" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Guilds]]></phrase>
+  <phrase title="nav.guilds_add" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Add Guild]]></phrase>
+  <phrase title="nav.guilds_all" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[All Guilds]]></phrase>
+  <phrase title="option.moturdrn_gw2guilds_apply_leader_group" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Apply Guild Leader User Group]]></phrase>
+  <phrase title="option.moturdrn_gw2guilds_apply_member_group" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Apply Guild Member User Group]]></phrase>
+  <phrase title="option.moturdrn_gw2guilds_leader_group" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Guild Leader User Group]]></phrase>
+  <phrase title="option.moturdrn_gw2guilds_member_group" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Guild Member User Group]]></phrase>
+  <phrase title="option_explain.moturdrn_gw2guilds_apply_leader_group" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Should Users be added/removed from a specific User Group when based on Leadership of Guilds?]]></phrase>
+  <phrase title="option_explain.moturdrn_gw2guilds_apply_member_group" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Should Users be added/removed from a specific User Group when joining/leaving Guilds?]]></phrase>
+  <phrase title="option_explain.moturdrn_gw2guilds_leader_group" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[The User Group to apply to Guild Leaders of Active Guilds]]></phrase>
+  <phrase title="option_explain.moturdrn_gw2guilds_member_group" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[The User Group to apply to Guild Members of Active Guilds]]></phrase>
+  <phrase title="option_group.moturdrn_gw2guilds" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[[Moturdrn] GW2 Guilds]]></phrase>
+  <phrase title="option_group_description.moturdrn_gw2guilds" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[]]></phrase>
   <phrase title="permission.moturdrn_gw2guilds_admin" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Can Administrate Guilds]]></phrase>
   <phrase title="permission.moturdrn_gw2guilds_createguild" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Can Create Guilds]]></phrase>
   <phrase title="permission.moturdrn_gw2guilds_joinguild" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Can Join Guilds]]></phrase>

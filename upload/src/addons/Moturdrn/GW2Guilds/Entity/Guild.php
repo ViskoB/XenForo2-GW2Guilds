@@ -47,8 +47,226 @@ class Guild extends Entity
                 'primary' => true,
             ],
         ];
+        $structure->getters = [
+            'canEdit' => true,
+            'canJoin' => true,
+            'canLeave' => true,
+            'canDelete' => true,
+            'canTransfer' => true,
+            'accessLevel' => true,
+            'memberCount' => true,
+            'pendingCount' => true
+        ];
 
         return $structure;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getCanEdit()
+    {
+        $visitor = \XF::visitor();
+        if($visitor['is_banned'])
+        {
+            return false;
+        }
+
+        if(!$visitor['user_id'])
+        {
+            return false;
+        }
+
+        if ($visitor->hasPermission('moturdrn_gw2guilds', 'admin')) {
+            return true;
+        }
+
+        if($this->guildleader_userid == $visitor['user_id'])
+        {
+            return true;
+        }
+
+        $guildOfficers = explode(',', $this->guildofficer_userids);
+
+        foreach($guildOfficers as $guildOfficer){
+            if($guildOfficer == $visitor['user_id'])
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function getCanJoin()
+    {
+        $visitor = \XF::visitor();
+        if($visitor['is_banned'])
+        {
+            return false;
+        }
+
+        if(!$visitor['user_id'])
+        {
+            return false;
+        }
+
+        if($this->_getMemberRepo()->getGuildMember($this->guild_id, $visitor['user_id']))
+            return false;
+
+        if ($visitor->hasPermission('moturdrn_gw2guilds', 'joinguild')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function getCanLeave()
+    {
+        $visitor = \XF::visitor();
+        if($visitor['is_banned'])
+        {
+            return false;
+        }
+
+        if(!$visitor['user_id'])
+        {
+            return false;
+        }
+
+        if($this->guildleader_userid == $visitor['user_id'])
+        {
+            return false;
+        }
+
+        if($this->_getMemberRepo()->getGuildMember($this->guild_id, $visitor['user_id']))
+            return true;
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getCanDelete()
+    {
+        $visitor = \XF::visitor();
+        if($visitor['is_banned'])
+        {
+            return false;
+        }
+
+        if(!$visitor['user_id'])
+        {
+            return false;
+        }
+
+        if ($visitor->hasPermission('moturdrn_gw2guilds', 'admin')) {
+            return true;
+        }
+
+        if($this->guildleader_userid == $visitor['user_id'])
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getCanTransfer()
+    {
+        $visitor = \XF::visitor();
+        if($visitor['is_banned'])
+        {
+            return false;
+        }
+
+        if(!$visitor['user_id'])
+        {
+            return false;
+        }
+
+        if ($visitor->hasPermission('moturdrn_gw2guilds', 'admin')) {
+            return true;
+        }
+
+        if($this->guildleader_userid == $visitor['user_id'])
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool|int
+     */
+    public function getAccessLevel()
+    {
+        $visitor = \XF::visitor();
+        if($visitor['is_banned'])
+        {
+            return false;
+        }
+
+        if(!$visitor['user_id'])
+        {
+            return 0;
+        }
+
+        if(\XF::visitor()->hasPermission('moturdrn_gw2guilds','admin'))
+        {
+            return 50;
+        }
+
+        if($this->guildleader_userid == $visitor['user_id'])
+        {
+            return 40;
+        }
+
+        $guildOfficers = explode(',', $this->guildofficer_userids);
+
+        foreach($guildOfficers as $guildOfficer){
+            if($guildOfficer == $visitor['user_id'])
+                return 30;
+        }
+
+
+        if($this->_getMemberRepo()->getActiveGuildMember($this->guild_id, $visitor['user_id']))
+            return 20;
+
+        if($this->_getMemberRepo()->getPendingRequestByUserGuild($this->guild_id, $visitor['user_id']))
+            return 10;
+
+        return 0;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getMemberCount()
+    {
+        /** @var \Moturdrn\GW2Guilds\Entity\Member $guildMembers */
+        $guildMembers = $this->_getMemberRepo()->getActiveGuildMemberCountByGuildId($this->guild_id);
+        return $guildMembers['GuildMembers'];
+    }
+
+    /**
+     * @return int
+     */
+    public function getPendingCount()
+    {
+        /** @var \Moturdrn\GW2Guilds\Entity\Member $pendingMembers */
+        $pendingMembers = $this->_getMemberRepo()->getPendingJoinRequestsCountByGuildId($this->guild_id);
+        return $pendingMembers['PendingMembers'];
     }
 
     protected function _postSave()

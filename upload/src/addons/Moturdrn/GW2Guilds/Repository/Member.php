@@ -40,6 +40,14 @@ class Member extends Repository
     /**
      * @return array
      */
+    public function getActiveGuildMemberCountByGuildId($guildId)
+    {
+        return $this->db()->fetchRow("SELECT count(*) as `GuildMembers` FROM xf_moturdrn_gw2guilds_member WHERE state = 'accepted' AND guild_id = ?;", $guildId);
+    }
+
+    /**
+     * @return array
+     */
     public function getPendingRequestByUserGuild($guildId, $userId)
     {
         return $this->db()->fetchRow("SELECT * FROM xf_moturdrn_gw2guilds_member WHERE guild_id = ? and user_id = ? and state = 'pending';", array($guildId, $userId));
@@ -59,6 +67,14 @@ class Member extends Repository
     public function getPendingJoinRequestsByGuildId($guildId)
     {
         return $this->db()->fetchAll("SELECT * FROM xf_moturdrn_gw2guilds_member WHERE state = 'pending' and guild_id = ?", $guildId);
+    }
+
+    /**
+     * @return array
+     */
+    public function getPendingJoinRequestsCountByGuildId($guildId)
+    {
+        return $this->db()->fetchRow("SELECT count(*) as `PendingMembers` FROM xf_moturdrn_gw2guilds_member WHERE state = 'pending' and guild_id = ?", $guildId);
     }
 
     /**

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content_type_fields>
+  <field content_type="guild" field_name="sitemap_handler_class">Moturdrn\GW2Guilds\Sitemap\Guild</field>
+  <field content_type="moturdrn_gw2guilds" field_name="alert_handler_class">Moturdrn\GW2Guilds\Alert\Guild</field>
+</content_type_fields>

@@ -20,11 +20,26 @@ class Guild extends Repository
 			ORDER BY guilds.Rank, guilds.guild_name, guilds.guild_tag ASC", "guild_id");
     }
 
+    /**
+     * @return \Moturdrn\GW2Guilds\Entity\Guild
+     */
+    public function findGuilds()
+    {
+        /** @var \Moturdrn\GW2Guilds\Entity\Guild $finder */
+        $finder = $this->finder('Moturdrn\GW2Guilds:Guild')
+            ->order("guild_name", "asc")->order("guild_tag", "asc")->fetch();
+        return $finder;
+    }
+
+    /**
+     * @param $guildId
+     * @return \Moturdrn\GW2Guilds\Entity\Guild
+     */
     public function findGuildById($guildId)
     {
-        $finder = $this->finder('Moturdrn\GW2Guilds:Guild');
-        $finder
-            ->where('guild_id',$guildId);
+        /** @var \Moturdrn\GW2Guilds\Entity\Guild $finder */
+        $finder = $this->finder('Moturdrn\GW2Guilds:Guild')
+            ->where('guild_id',$guildId)->fetchOne();
 
         return $finder;
     }
@@ -34,11 +49,15 @@ class Guild extends Repository
         return $this->db()->fetchRow("SELECT * FROM xf_moturdrn_gw2guilds_guild WHERE guild_id = ?", $guildId);
     }
 
+    /**
+     * @param $guildName
+     * @return \Moturdrn\GW2Guilds\Entity\Guild
+     */
     public function findGuildByName($guildName)
     {
-        $finder = $this->finder('Moturdrn\GW2Guilds:Guild');
-        $finder
-            ->where('guild_name',$guildName);
+        /** @var \Moturdrn\GW2Guilds\Entity\Guild $finder */
+        $finder = $this->finder('Moturdrn\GW2Guilds:Guild')
+            ->where('guild_name',$guildName)->fetchOne();
 
         return $finder;
     }
@@ -62,12 +81,18 @@ class Guild extends Repository
             ->fetchRow("SELECT count(*) as GuildCount FROM xf_moturdrn_gw2guilds_member as m JOIN xf_moturdrn_gw2guilds_guild as g on g.guild_id = m.guild_id WHERE m.user_id = ?",$userId);
     }
 
+    /**
+     * @param $guildIdOrName
+     * @return \Moturdrn\GW2Guilds\Entity\Guild
+     */
     public function getGuildByIdOrName($guildIdOrName)
     {
         if(is_int($guildIdOrName) || $guildIdOrName === strval(intval($guildIdOrName))) {
-            $guild = $this->getGuildById($guildIdOrName);
+            /** @var \Moturdrn\GW2Guilds\Entity\Guild $guild */
+            $guild = $this->findGuildById($guildIdOrName);
         }else{
-            $guild = $this->getGuildByName($guildIdOrName);
+            /** @var \Moturdrn\GW2Guilds\Entity\Guild $guild */
+            $guild = $this->findGuildByName($guildIdOrName);
         }
 
         return $guild;

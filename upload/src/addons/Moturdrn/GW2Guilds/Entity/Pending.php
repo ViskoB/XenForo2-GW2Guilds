@@ -39,12 +39,12 @@ class Pending extends Entity
 
     protected function _postSave()
     {
-        $this->sendNotifications($this);
+        //$this->sendNotifications($this);
     }
 
     protected function _postDelete()
     {
-        $this->deletePendingAlert($this);
+        //$this->deletePendingAlert($this);
     }
 
     /**
@@ -111,12 +111,12 @@ class Pending extends Entity
 
         if($guild)
         {
-            $officerUserIds[] = $guild['guildleader_userid'];
+            $officerUserIds[] = $guild->guildleader_userid;
 
-            $guildOfficers = explode(',', $guild['guildofficer_userids']);
+            $guildOfficers = explode(',', $guild->guildofficer_userids);
             foreach($guildOfficers as $guildOfficer)
             {
-                if($guildOfficer != $pending['user_id'])
+                if($guildOfficer != $pending->user_id)
                     $officerUserIds[] = $guildOfficer;
             }
         }

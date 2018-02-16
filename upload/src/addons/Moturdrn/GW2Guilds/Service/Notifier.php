@@ -79,7 +79,6 @@ class Notifier extends AbstractService
 
     public function notify($timeLimit = null)
     {
-        $endTime = $timeLimit > 0 ? microtime(true) + $timeLimit : null;
 
         $notifiableUsers = $this->getUsersForNotification();
 
@@ -90,18 +89,6 @@ class Notifier extends AbstractService
             {
                 $this->sendGuildNotification($notifiableUsers[$userId]);
             }
-            unset($adminUsers[$k]);
-
-            if ($endTime && microtime(true) >= $endTime)
-            {
-                break;
-            }
-        }
-        $this->notifyAdmins = $adminUsers;
-
-        if ($endTime && microtime(true) >= $endTime)
-        {
-            return;
         }
 
         $officerUsers = $this->getNotifyOfficers();
@@ -111,18 +98,6 @@ class Notifier extends AbstractService
             {
                 $this->sendJoinNotification($notifiableUsers[$userId]);
             }
-            unset($officerUsers[$k]);
-
-            if ($endTime && microtime(true) >= $endTime)
-            {
-                break;
-            }
-        }
-        $this->notifyOfficers = $officerUsers;
-
-        if ($endTime && microtime(true) >= $endTime)
-        {
-            return;
         }
     }
 
@@ -178,7 +153,10 @@ class Notifier extends AbstractService
 
     protected function getUsersForNotification()
     {
-        $userIds = array_merge($this->getNotifyAdmins(), $this->getNotifyOfficers());
+        $userIds = array_merge(
+            $this->getNotifyAdmins(),
+            $this->getNotifyOfficers()
+        );
 
         $users = $this->app->em()->findByIds('XF:User', $userIds, ['Profile', 'Option']);
         if (!$users->count())

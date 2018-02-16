@@ -24,10 +24,11 @@ class Guild extends AbstractController
         }
 
         $guildRepo = $this->_getGuildRepo();
-        $guilds = $guildRepo->getGuilds();
-        $guilds = $this->prepareGuilds($guilds);
+        /** @var \Moturdrn\GW2Guilds\Entity\Guild $guilds */
+        $guilds = $guildRepo->findGuilds();
+        //$guilds = $this->prepareGuilds($guilds);
         $pendingGuilds = $guildRepo->getPendingGuilds();
-        $pendingGuilds = $this->prepareGuilds($pendingGuilds);
+        //$pendingGuilds = $this->prepareGuilds($pendingGuilds);
         if(!$visitor['user_id']) {
             $myGuilds = array("GuildCount" => 0);
         }
@@ -48,8 +49,9 @@ class Guild extends AbstractController
     public function actionView(ParameterBag $parameterBag)
     {
         $guildRepo = $this->_getGuildRepo();
+        /** @var \Moturdrn\GW2Guilds\Entity\Guild $guild */
         $guild = $guildRepo->getGuildByIdOrName($parameterBag->guild_id);
-        $guild = $this->prepareGuild($guild);
+        //$guild = $this->prepareGuild($guild);
         $this->assertCanonicalUrl($this->buildLink('guilds', $guild));
 
         $viewParams = [
@@ -61,7 +63,7 @@ class Guild extends AbstractController
     public function actionMine(ParameterBag $parameterBag)
     {
         $guildId = $parameterBag->guild_id;
-        $guild = \XF::em()->find('Moturdrn\GW2Guilds:Guidl', $guildId);
+        $guild = \XF::em()->find('Moturdrn\GW2Guilds:Guild', $guildId);
         if($guild)
         {
             return $this->redirect($this->buildLink('guilds', $guild));
@@ -117,6 +119,7 @@ class Guild extends AbstractController
     {
         $guildId = $parameterBag->guild_id;
 
+        /** @var \Moturdrn\GW2Guilds\Entity\Guild $guild */
         $guild = \XF::em()->find('Moturdrn\GW2Guilds:Guild', $guildId);
 
         if(!$guild)
@@ -126,7 +129,7 @@ class Guild extends AbstractController
 
         $this->assertCanonicalUrl($this->buildLink('guilds/delete', $guild));
 
-        if (!$this->canDeleteGuild($guild->toArray()))
+        if (!$this->canDeleteGuild($guild))
         {
             throw $this->exception($this->noPermission('You cannot delete this Guild'));
         }
@@ -135,18 +138,18 @@ class Guild extends AbstractController
 
         if ($this->isPost())
         {
-            $guildLeader = \XF::em()->find('XF:User', $guild['guildleader_userid']);
+            $guildLeader = \XF::em()->find('XF:User', $guild->guildleader_userid);
 
             /*
              * Remove the Guild
              */
             $guild->delete();
 
-            if($guild['status'] == 'Pending (New)' && $guild['guildleader_userid'] != $visitor['user_id'])
+            if($guild->status == 'Pending (New)' && $guild->guildleader_userid != $visitor['user_id'])
             {
                 $messageText = <<<HTML
 					Hi {$guildLeader['username']},
-					Your registration of the Guild {$guild['guild_name']} [{$guild['guild_tag']}] has been rejected.
+					Your registration of the Guild {$guild->guild_name} [{$guild->guild_tag}] has been rejected.
 
 					This may be due to the Guild not being active on the server, or for other reasons.
 
@@ -157,11 +160,11 @@ HTML;
                 $creator->save();
                 $this->finalizeConversationCreate($creator);
             }
-            elseif($guild['guildleader_userid'] != $visitor['user_id'])
+            elseif($guild->guildleader_userid != $visitor['user_id'])
             {
                 $messageText = <<<HTML
                     Hi {$guildLeader['username']},
-                    The Guild {$guild['guildname']} [{$guild['guildtag']}] has been deleted from our database.
+                    The Guild {$guild->guild_name} [{$guild->guild_tag}] has been deleted from our database.
 
                     This may be due to the Guild no longer being active on the server, or for other reasons.
 
@@ -228,6 +231,7 @@ HTML;
                 $writer = \XF::em()->create('Moturdrn\GW2Guilds:Member');
                 $writer->set('guild_id', $guild['guild_id']);
                 $writer->set('user_id', $user['user_id']);
+                $writer->set('username', $user['username']);
                 $writer->set('state', 'accepted');
                 $writer->save();
             }else{
@@ -379,6 +383,7 @@ HTML;
             $writer = \XF::em()->create("Moturdrn\GW2Guilds:Member");
             $writer->set('guild_id', $guild['guild_id']);
             $writer->set('user_id', $visitor['user_id']);
+            $writer->set('username', $visitor['username']);
             $writer->set('state', 'accepted');
             $writer->save();
         }
@@ -402,10 +407,11 @@ HTML;
         $memberEntity = \XF::em()->create('Moturdrn\GW2Guilds:Member');
         $memberEntity->set('guild_id', $guild['guild_id']);
         $memberEntity->set('user_id', $visitor['user_id']);
+        $memberEntity->set('username', $visitor['username']);
         $memberEntity->set('state', 'pending');
         $memberEntity->save();
 
-        return $this->redirect($this->buildLink('guilds/roster', $guild), 'You have requested to join the Guild');
+        return $this->redirect($this->buildLink('guilds'), 'You have requested to join the Guild');
     }
 
     public function actionLeave(ParameterBag $parameterBag)
@@ -447,7 +453,7 @@ HTML;
         $guildRepo = $this->_getGuildRepo();
         $guild = $guildRepo->getGuildByIdOrName($parameterBag->guild_id);
         $this->assertCanonicalUrl($this->buildLink('guilds/roster', $guild));
-        $guild = $this->prepareGuild($guild);
+        //$guild = $this->prepareGuild($guild);
         $visitor = \XF::visitor();
         if(!$visitor['user_id']) {
             $showAccNames = false;
@@ -466,21 +472,30 @@ HTML;
              */
             $guildUser = $this->assertViewableUser($guildMember['user_id'], [], false);
 
-            $customFields = unserialize($guildUser['custom_fields']);
+            //$customFields = unserialize($guildUser['custom_fields']);
             $displayName = $guildUser['username'];
             if($guildUser['user_id'] == $guild['guildleader_userid'])
             {
-                $guildLeaderSingle = array("user" => $guildUser, "GW2AccName" => $customFields['guild_wars_2_id']);
+                $guildLeaderSingle = array(
+                    "user" => $guildUser,
+                    //"GW2AccName" => $customFields['guild_wars_2_id']
+                );
                 $guildLeader[] = $guildLeaderSingle;
             }
             elseif(in_array($guildUser['user_id'],explode(',',$guild['guildofficer_userids'])))
             {
-                $guildOfficer = array("user" => $guildUser, "GW2AccName" => $customFields['guild_wars_2_id']);
+                $guildOfficer = array(
+                    "user" => $guildUser,
+                    //"GW2AccName" => $customFields['guild_wars_2_id']
+                );
                 $guildOfficers[$displayName] = $guildOfficer;
             }
             else
             {
-                $guildMember = array("user" => $guildUser, "GW2AccName" => $customFields['guild_wars_2_id']);
+                $guildMember = array(
+                    "user" => $guildUser,
+                    //"GW2AccName" => $customFields['guild_wars_2_id']
+                );
                 $guildMembers[$displayName] = $guildMember;
             }
         }
@@ -494,9 +509,12 @@ HTML;
              */
             $guildUser = $this->assertViewableUser($pendingRequest['user_id'], [], false);
 
-            $customFields = unserialize($guildUser['custom_fields']);
+            //$customFields = unserialize($guildUser['custom_fields']);
             $displayName = $guildUser['username'];
-            $pendingMember = array("user" => $guildUser, "GW2AccName" => $customFields['guild_wars_2_id']);
+            $pendingMember = array(
+                "user" => $guildUser,
+                //"GW2AccName" => $customFields['guild_wars_2_id']
+            );
             $pendingMembers[$displayName] = $pendingMember;
         }
 
@@ -639,7 +657,7 @@ HTML;
         /*
          * Remove any pending new or change Guild requests for this Guild
          */
-        if($existingPending = $this->_getPendingRepo()->getPendingRequestActivateByGuildId($guild['guildid']))
+        if($existingPending = $this->_getPendingRepo()->getPendingRequestActivateByGuildId($guild->guild_id))
         {
             foreach($existingPending as $pending)
             {
@@ -670,7 +688,7 @@ HTML;
         {
             $messageText = <<<HTML
                     Hi {$guildLeader['username']},
-                    The Guild {$guild['guildname']} [{$guild['guildtag']}] has been marked as Inactive.
+                    The Guild {$guild['guild_name']} [{$guild['guild_tag']}] has been marked as Inactive.
 
                     This may be due to the Guild not being active on the server, or for other reasons.
 
@@ -921,7 +939,11 @@ HTML;
         return true;
     }
 
-    protected function prepareGuilds(array $guilds)
+    /**
+     * @param \Moturdrn\GW2Guilds\Entity\Guild $guilds
+     * @return \Moturdrn\GW2Guilds\Entity\Guild
+     */
+    protected function prepareGuilds(\Moturdrn\GW2Guilds\Entity\Guild $guilds)
     {
         foreach($guilds as &$guild)
         {
@@ -930,7 +952,11 @@ HTML;
         return $guilds;
     }
 
-    protected function prepareGuild(array $guild)
+    /**
+     * @param \Moturdrn\GW2Guilds\Entity\Guild $guild
+     * @return \Moturdrn\GW2Guilds\Entity\Guild
+     */
+    protected function prepareGuild(\Moturdrn\GW2Guilds\Entity\Guild $guild)
     {
         $memberRepo = $this->_getMemberRepo();
 
@@ -1118,7 +1144,11 @@ HTML;
         return false;
     }
 
-    protected function canDeleteGuild(array $guild)
+    /**
+     * @param \Moturdrn\GW2Guilds\Entity\Guild $guild
+     * @return bool
+     */
+    protected function canDeleteGuild(\Moturdrn\GW2Guilds\Entity\Guild $guild)
     {
         $visitor = \XF::visitor();
         if($visitor['is_banned'])
@@ -1171,10 +1201,15 @@ HTML;
         return false;
     }
 
-    protected function _getGuildAddOrEditResponse(array $guild)
+    /**
+     * @param \Moturdrn\GW2Guilds\Entity\Guild $guild
+     * @return \XF\Mvc\Reply\View
+     * @throws \XF\Mvc\Reply\Exception
+     */
+    protected function _getGuildAddOrEditResponse(\Moturdrn\GW2Guilds\Entity\Guild $guild)
     {
 
-        if($guild && !$this->canEditGuild($guild))
+        if($guild && !$guild->getCanEdit())
         {
             throw $this->exception($this->noPermission('You cannot edit this Guild'));
         }
