@@ -130,10 +130,10 @@
     </dl>
 </xf:form>]]></template>
   <template type="public" title="moturdrn_gw2guilds_emblem" version_id="2000010" version_string="2.0.0 Alpha"><![CDATA[<img src="{$emblem_src}" />]]></template>
-  <template type="public" title="moturdrn_gw2guilds_guild_list_pending_item" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[<xf:macro name="guild_block" arg-guild="!">
+  <template type="public" title="moturdrn_gw2guilds_guild_list_pending_item" version_id="2000470" version_string="2.0.4"><![CDATA[<xf:macro name="guild_block" arg-guild="!">
     <li id="guild-{$guild.guild_id}" class="primaryContent memberListItem guildMemberListItem">
         <div class="userAvatar">
-            {{guild_emblem($guild, 64)}}
+            <img src="<xf:callback class="Moturdrn\\GW2Guilds\\Listener" method="getEmblem" params="[{$guild.guild_name}]"></xf:callback>" />
         </div>
         <div class="memberInfo">
             <h3 class="title">{$guild.guild_name} [{$guild.guild_tag}]</h3>
@@ -141,11 +141,11 @@
                 <div class="controlAction">
                     <ul class="controlLink">
                         <xf:if is="{$guild.status} == 'Pending (Change)'">
-                            <li><a href="{{link('canonical:guilds/activate',$guild)}}" class="OverlayTrigger"><span class="control promote">Set Active</span></a></li>
-                            <li><a href="{{link('canonical:guilds/deactivate',$guild)}}" class="OverlayTrigger removeLink"><span class="control remove">Set Inactive</span></a></li>
+                            <li><a href="{{ link('guilds/activate', $guild) }}" class="OverlayTrigger"><span class="control promote">Set Active</span></a></li>
+                            <li><a href="{{link('guilds/deactivate',$guild)}}" class="OverlayTrigger removeLink"><span class="control remove">Set Inactive</span></a></li>
                             <xf:else />
-                            <li><a href="{{link('canonical:guilds/activate',$guild)}}" class="OverlayTrigger"><span class="control promote">Set Active</span></a></li>
-                            <li><a href="{{link('canonical:guilds/delete',$guild)}}" class="OverlayTrigger removeLink"><span class="control remove">Delete</span></a></li>
+                            <li><a href="{{link('guilds/activate',$guild)}}" class="OverlayTrigger"><span class="control promote">Set Active</span></a></li>
+                            <li><a href="{{link('guilds/delete',$guild)}}" class="OverlayTrigger removeLink"><span class="control remove">Delete</span></a></li>
                         </xf:if>
                     </ul>
                 </div>
@@ -156,7 +156,7 @@
         </div>
     </li>
 </xf:macro>]]></template>
-  <template type="public" title="moturdrn_gw2guilds_index" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[<xf:title>Guilds</xf:title>
+  <template type="public" title="moturdrn_gw2guilds_index" version_id="2000470" version_string="2.0.4"><![CDATA[<xf:title>Guilds</xf:title>
 <xf:breadcrumb href="{{ link('canonical:guilds') }}">Guilds</xf:breadcrumb>
 <xf:pageaction>
     <xf:if is="$canCreate">

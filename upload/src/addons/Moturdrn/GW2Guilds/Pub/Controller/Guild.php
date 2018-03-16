@@ -97,7 +97,7 @@ class Guild extends AbstractController
 
     public function actionAdd()
     {
-        $guild = array();
+        $guild = null;
 
         if(!$this->canCreateGuild())
         {
@@ -1206,7 +1206,7 @@ HTML;
      * @return \XF\Mvc\Reply\View
      * @throws \XF\Mvc\Reply\Exception
      */
-    protected function _getGuildAddOrEditResponse(\Moturdrn\GW2Guilds\Entity\Guild $guild)
+    protected function _getGuildAddOrEditResponse(\Moturdrn\GW2Guilds\Entity\Guild $guild = null)
     {
 
         if($guild && !$guild->getCanEdit())
@@ -1314,8 +1314,6 @@ HTML;
 
     protected function finalizeConversationCreate(\XF\Service\Conversation\Creator $creator)
     {
-        /** @var \XF\ControllerPlugin\Draft $draftPlugin */
-        $draftPlugin = $this->plugin('XF:Draft');
-        $draftPlugin->deleteDraft('conversation');
+        \XF\Draft::createFromKey('conversation')->delete();
     }
 }
