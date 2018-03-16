@@ -76,6 +76,7 @@ class Setup extends AbstractSetup
             $this->schemaManager()->renameTable('xf_moturdrn_gw2guilds_members', 'xf_moturdrn_gw2guilds_member');
             $this->schemaManager()->alterTable('xf_moturdrn_gw2guilds_member', function (Alter $table) {
                 $table->renameColumn('guildid', 'guild_id');
+                $table->addColumn('username', 'varchar', 50);
             });
         }
 

@@ -78,12 +78,12 @@ class Guild extends AbstractController
 
         $guilds = $this->_getGuildRepo()->getGuildsofUser($visitor['user_id']);
 
-        $guilds = $this->prepareGuilds($guilds);
+        //$guilds = $this->prepareGuilds($guilds);
 
         $canCreate = $this->canCreateGuild();
 
         $pendingGuilds = $this->_getGuildRepo()->getPendingGuilds();
-        $pendingGuilds = $this->prepareGuilds($pendingGuilds);
+        //$pendingGuilds = $this->prepareGuilds($pendingGuilds);
 
         $viewParams = array(
             'guilds'	=> $guilds,
@@ -201,7 +201,7 @@ HTML;
 
         $this->assertCanonicalUrl($this->buildLink('guilds/transfer', $guild));
 
-        if (!$this->canTransferGuild($guild->toArray()))
+        if (!$this->canTransferGuild($guild))
         {
             throw $this->exception($this->noPermission('You cannot transfer this Guild'));
         }
@@ -724,9 +724,9 @@ HTML;
         }
         $userId = $user->user_id;
 
-        $guild = $this->prepareGuild($guild);
+        //$guild = $this->prepareGuild($guild);
 
-        if(!$guild['canEdit'])
+        if(!$guild->getCanEdit())
             throw $this->exception($this->noPermission("You cannot add members to the roster"));
 
         if($this->_getMemberRepo()->getGuildMember($guildId, $userId))
@@ -735,9 +735,11 @@ HTML;
         if($this->_getMemberRepo()->getPendingRequestByUserGuild($guildId, $userId))
             throw $this->exception($this->message("Member already applied to Guild, reject or approve their request", 400));
 
-        $bulkInfo = array("guild_id" => $guildId, "user_id" => $userId, "state" => "accepted");
         $writer = \XF::em()->create('Moturdrn\GW2Guilds:Member');
-        $writer->bulkSet($bulkInfo);
+        $writer->set('guild_id', $guild['guild_id']);
+        $writer->set('user_id', $user['user_id']);
+        $writer->set('username', $user['username']);
+        $writer->set('state', 'accepted');
         $writer->save();
 
         $this->_getMemberRepo()->accessAddOrRemove($userId);
@@ -1065,7 +1067,7 @@ HTML;
         return false;
     }
 
-    protected function canJoinGuild(array $guild)
+    protected function canJoinGuild(\Moturdrn\GW2Guilds\Entity\Guild $guild)
     {
         $visitor = \XF::visitor();
         if($visitor['is_banned'])
@@ -1089,7 +1091,7 @@ HTML;
         return false;
     }
 
-    protected function canLeaveGuild(array $guild)
+    protected function canLeaveGuild(\Moturdrn\GW2Guilds\Entity\Guild $guild)
     {
         $visitor = \XF::visitor();
         if($visitor['is_banned'])
@@ -1113,7 +1115,7 @@ HTML;
         return false;
     }
 
-    protected function canEditGuild(array $guild)
+    protected function canEditGuild(\Moturdrn\GW2Guilds\Entity\Guild $guild)
     {
         $visitor = \XF::visitor();
         if($visitor['is_banned'])
@@ -1172,7 +1174,7 @@ HTML;
         return false;
     }
 
-    protected function canTransferGuild(array $guild)
+    protected function canTransferGuild(\Moturdrn\GW2Guilds\Entity\Guild $guild)
     {
         $visitor = \XF::visitor();
         if($visitor['is_banned'])
