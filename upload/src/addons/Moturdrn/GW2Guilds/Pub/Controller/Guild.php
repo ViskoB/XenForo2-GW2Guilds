@@ -332,7 +332,7 @@ HTML;
         {
             $guild = \XF::em()->find('Moturdrn\GW2Guilds:Guild', $guildId);
 
-            if (!$this->canEditGuild($guild->toArray()))
+            if (!$this->canEditGuild($guild))
             {
                 // throw error if user try to editing category but don't have permission :-/
                 throw $this->exception($this->noPermission("You cannot edit this Guild"));
@@ -399,7 +399,7 @@ HTML;
         if(!$guild = \XF::em()->find('Moturdrn\GW2Guilds:Guild', $guildId))
             throw $this->exception($this->notFound('Guild not found'));
 
-        if(!$this->canJoinGuild($guild->toArray()))
+        if(!$this->canJoinGuild($guild))
             throw $this->exception($this->noPermission('You cannot join this Guild'));
 
         $visitor = \XF::visitor();
@@ -420,7 +420,7 @@ HTML;
         if(!$guild = \XF::em()->find('Moturdrn\GW2Guilds:Guild', $guildId))
             throw $this->exception($this->notFound('Guild not found'));
 
-        if(!$this->canLeaveGuild($guild->toArray()))
+        if(!$this->canLeaveGuild($guild))
             throw $this->exception($this->noPermission('You cannot leave this Guild'));
 
         $visitor = \XF::visitor();
@@ -452,7 +452,10 @@ HTML;
     {
         $guildRepo = $this->_getGuildRepo();
         $guild = $guildRepo->getGuildByIdOrName($parameterBag->guild_id);
-        $this->assertCanonicalUrl($this->buildLink('guilds/roster', $guild));
+        if(!$guild || !$guild = $this->assertGuildValid($guildId))
+        {
+            return $this->redirect($this->buildLink('canonical:guilds'), 'Guild does not exist!');
+        }
         //$guild = $this->prepareGuild($guild);
         $visitor = \XF::visitor();
         if(!$visitor['user_id']) {
@@ -546,7 +549,7 @@ HTML;
         if(!$guild)
             throw $this->exception($this->notFound('Guild does not exist'));
 
-        if(!$this->canEditGuild($guild->toArray()))
+        if(!$this->canEditGuild($guild))
         {
             throw $this->exception($this->noPermission('You cannot edit this Guild'));
         }
@@ -644,7 +647,7 @@ HTML;
             throw $this->exception($this->notFound('Guild does not exist'));
         }
 
-        if(!$this->canEditGuild($guild->toArray()))
+        if(!$this->canEditGuild($guild))
         {
             throw $this->exception($this->noPermission('You cannot edit this Guild'));
         }
@@ -763,7 +766,7 @@ HTML;
         if(!$member = \XF::em()->find('Moturdrn\GW2Guilds:Member', array($guild['guild_id'], $userId)))
             throw $this->exception($this->notFound('User not member of this Guild'));
 
-        $guildAccessLevel = $this->guildAccessLevel($guild->toArray());
+        $guildAccessLevel = $this->guildAccessLevel($guild);
 
         if($guild['guildleader_userid'] == $userId)
             throw $this->exception($this->message('You cannot remove the Guild Leader. The Guild Leader or Admin must transfer or delete the Guild', 400));
@@ -831,7 +834,7 @@ HTML;
         if(!$member = \XF::em()->find('Moturdrn\GW2Guilds:Member', array($guild['guild_id'], $userId)))
             throw $this->exception($this->notFound('User not member of this Guild'));
 
-        $guildAccessLevel = $this->guildAccessLevel($guild->toArray());
+        $guildAccessLevel = $this->guildAccessLevel($guild);
 
         if($guild['guildleader_userid'] == $userId)
             throw $this->exception($this->message('You cannot promote a Guild Leader further', 400));
@@ -893,7 +896,7 @@ HTML;
         if(!$member = \XF::em()->find('Moturdrn\GW2Guilds:Member', ["guild_id" => $guild['guild_id'], "user_id" => $userId]))
             throw $this->exception($this->notFound('User not member of this Guild'));
 
-        $guildAccessLevel = $this->guildAccessLevel($guild->toArray());
+        $guildAccessLevel = $this->guildAccessLevel($guild);
 
         if($userId == $guild['guildleader_userid'])
             throw $this->exception($this->message('A Guild Leader cannot be demoted. The Guild Leader or an Admin must transfer the Guild', 400));
@@ -1008,7 +1011,7 @@ HTML;
         return false;
     }
 
-    public function guildAccessLevel(array $guild)
+    public function guildAccessLevel(\Moturdrn\GW2Guilds\Entity\Guild $guild)
     {
         $visitor = \XF::visitor();
         if($visitor['is_banned'])
