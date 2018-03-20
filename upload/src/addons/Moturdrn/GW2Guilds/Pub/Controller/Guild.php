@@ -232,7 +232,6 @@ HTML;
                 $writer = \XF::em()->create('Moturdrn\GW2Guilds:Member');
                 $writer->set('guild_id', $guild['guild_id']);
                 $writer->set('user_id', $user['user_id']);
-                $writer->set('username', $user['username']);
                 $writer->set('state', 'accepted');
                 $writer->save();
             }else{
@@ -384,14 +383,13 @@ HTML;
             $writer = \XF::em()->create("Moturdrn\GW2Guilds:Member");
             $writer->set('guild_id', $guild['guild_id']);
             $writer->set('user_id', $visitor['user_id']);
-            $writer->set('username', $visitor['username']);
             $writer->set('state', 'accepted');
             $writer->save();
         }
 
         $this->_getMemberRepo()->leaderAddOrRemove($guild['guildleader_userid']);
 
-        return $this->redirect($this->buildLink('canonical:guilds'), 'Guild Added');
+        return $this->redirect($this->buildLink('guilds', $guild), 'Guild Added');
     }
 
     public function actionJoin(ParameterBag $parameterBag)
@@ -411,7 +409,7 @@ HTML;
         $memberEntity->set('state', 'pending');
         $memberEntity->save();
 
-        return $this->redirect($this->buildLink('guilds'), 'You have requested to join the Guild');
+        return $this->redirect($this->buildLink('guilds', $guild), 'You have requested to join the Guild');
     }
 
     public function actionLeave(ParameterBag $parameterBag)
@@ -445,7 +443,7 @@ HTML;
 
         $this->_getMemberRepo()->accessAddOrRemove($visitor['user_id']);
 
-        return $this->redirect($this->buildLink('guilds'), 'You have left the Guild');
+        return $this->redirect($this->buildLink('guilds', $guild), 'You have left the Guild');
     }
 
     public function actionRoster(ParameterBag $parameterBag)
@@ -741,48 +739,68 @@ HTML;
         return $this->redirect($this->buildLink('guilds'), 'Guild status changed');
     }
 
-    public function actionMembersAssign(ParameterBag $parameterBag)
+    public function actionInvite(ParameterBag $parameterBag)
     {
-        $this->assertPostOnly();
-
         $guildId = $parameterBag->guild_id;
-        $username = $this->filter('username','str');
 
-        $guildRepo = $this->_getGuildRepo();
-        $guild = $guildRepo->getGuildByIdOrName($guildId);
+        $guild = \XF::em()->find('Moturdrn\GW2Guilds:Guild', $guildId);
+
         if(!$guild)
         {
-            throw $this->exception($this->notFound("Guild does not exist"));
+            throw $this->exception($this->message("Guild does not exist", 400));
         }
 
-        $user = $this->_getUserRepo()->getUserByNameOrEmail($username);
-        if(!$user)
+        $this->assertCanonicalUrl($this->buildLink('guilds/transfer', $guild));
+
+        if (!$this->canTransferGuild($guild))
         {
-            throw $this->exception($this->notFound("User does not exist"));
+            throw $this->exception($this->noPermission('You cannot transfer this Guild'));
         }
-        $userId = $user->user_id;
 
-        //$guild = $this->prepareGuild($guild);
+        $visitor = \XF::visitor();
 
-        if(!$guild->getCanEdit())
-            throw $this->exception($this->noPermission("You cannot add members to the roster"));
+        if ($this->isPost()) {
+            $username = $this->filter('username', 'str');
 
-        if($this->_getMemberRepo()->getGuildMember($guildId, $userId))
-            throw $this->exception($this->message("Member already in Guild", 400));
+            if (!$guild) {
+                throw $this->exception($this->notFound("Guild does not exist"));
+            }
 
-        if($this->_getMemberRepo()->getPendingRequestByUserGuild($guildId, $userId))
-            throw $this->exception($this->message("Member already applied to Guild, reject or approve their request", 400));
+            $user = $this->_getUserRepo()->getUserByNameOrEmail($username);
+            if (!$user) {
+                throw $this->exception($this->notFound("User does not exist"));
+            }
+            $userId = $user->user_id;
 
-        $writer = \XF::em()->create('Moturdrn\GW2Guilds:Member');
-        $writer->set('guild_id', $guild['guild_id']);
-        $writer->set('user_id', $user['user_id']);
-        $writer->set('username', $user['username']);
-        $writer->set('state', 'accepted');
-        $writer->save();
+            //$guild = $this->prepareGuild($guild);
 
-        $this->_getMemberRepo()->accessAddOrRemove($userId);
+            if (!$guild->getCanEdit())
+                throw $this->exception($this->noPermission("You cannot add members to the roster"));
 
-        return $this->redirect($this->buildLink('canonical:guilds/roster', $guild), 'User added to the Guild');
+            if ($this->_getMemberRepo()->getGuildMember($guildId, $userId))
+                throw $this->exception($this->message("Member already in Guild", 400));
+
+            if ($this->_getMemberRepo()->getPendingRequestByUserGuild($guildId, $userId))
+                throw $this->exception($this->message("Member already applied to Guild, reject or approve their request", 400));
+
+            $writer = \XF::em()->create('Moturdrn\GW2Guilds:Member');
+            $writer->set('guild_id', $guild['guild_id']);
+            $writer->set('user_id', $user['user_id']);
+            $writer->set('state', 'accepted');
+            $writer->save();
+
+            $this->_getMemberRepo()->accessAddOrRemove($userId);
+
+            return $this->redirect($this->buildLink('canonical:guilds/roster', $guild), 'User added to the Guild');
+        }
+        else
+        {
+            $viewParams = array(
+                'guild' => $guild,
+            );
+
+            return $this->view('Moturdrn\GW2Guilds:View', 'moturdrn_gw2guilds_invite', $viewParams);
+        }
     }
 
     public function actionMembersRemove(ParameterBag $parameterBag)

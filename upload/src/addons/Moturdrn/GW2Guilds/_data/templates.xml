@@ -199,6 +199,21 @@
         </ol>
     </div>
 </div>]]></template>
+  <template type="public" title="moturdrn_gw2guilds_invite" version_id="2001470" version_string="2.0.14"><![CDATA[<xen:title>Transfer Guild: {$guild.guild_name} [{$guild.guild_tag}]</xen:title>
+<xf:breadcrumb href="{{ link('canonical:guilds') }}">Guilds</xf:breadcrumb>
+<xf:breadcrumb href="{{ link('canonical:guilds', $guild) }}">{$guild.guild_name} [{$guild.guild_tag}]</xf:breadcrumb>
+<xf:breadcrumb href="{{ link('canonical:guilds/transfer', $guild) }}">Transfer</xf:breadcrumb>
+
+<xf:form action="{{ link('guilds/invite', $guild) }}" class="block" attributes="{{ widget_data($widget, true) }}">
+	<div class="block-container">
+		<h3 class="block-minorHeader">{$title}</h3>
+		<div class="block-body block-row">
+			<label for="username">Enter a username below to add them to the Guild.</label>
+			<xf:textbox name="username" placeholder="{{ phrase('name...') }}" ac="single" data-autosubmit="true" autocomplete="off" />
+			<input type="submit" value="Add" class="button primary" accesskey="s" />
+		</div>
+	</div>
+</xf:form>]]></template>
   <template type="public" title="moturdrn_gw2guilds_list.less" version_id="2000010" version_string="2.0.0 Alpha"><![CDATA[.GuildListMain
 {
     margin-left: 230px;
@@ -355,7 +370,7 @@
   font-weight: bold;
   margin-right: 5px;
 }]]></template>
-  <template type="public" title="moturdrn_gw2guilds_macros" version_id="2001370" version_string="2.0.13"><![CDATA[<xf:macro name="guild_view_tabs" arg-guild="!" arg-guildPage="!">
+  <template type="public" title="moturdrn_gw2guilds_macros" version_id="2001470" version_string="2.0.14"><![CDATA[<xf:macro name="guild_view_tabs" arg-guild="!" arg-guildPage="!">
     <div class="tabs tabs--standalone">
         <div class="hScroller" data-xf-init="h-scroller">
             <span class="hScroller-scroll">
@@ -422,13 +437,16 @@
                         </xf:if>
                     </xf:if>
                     <xf:if is="$guild.canJoin">
-                        <a href="{{ link('guilds/join', $guild) }}" class="blockLink" data-xf-click="overlay">Join</a>
+                        <a href="{{ link('guilds/join', $guild) }}" class="blockLink">Join</a>
                     </xf:if>
                     <xf:if is="$guild.canLeave">
-                        <a href="{{ link('guilds/leave', $guild) }}" class="blockLink" data-xf-click="overlay">Leave</a>
+                        <a href="{{ link('guilds/leave', $guild) }}" class="blockLink">Leave</a>
                     </xf:if>
                     <xf:if is="$guild.canEdit">
                         <a href="{{ link('guilds/edit', $guild) }}" class="blockLink" data-xf-click="overlay">Edit</a>
+                    </xf:if>
+                    <xf:if is="$guild.accessLevel >= 30">
+                        <a href="{{ link('guilds/invite', $guild) }}" class="blockLink" data-xf-click="overlay">Add Member</a>
                     </xf:if>
                     <xf:if is="$guild.canTransfer">
                         <a href="{{ link('guilds/transfer', $guild) }}" class="blockLink" data-xf-click="overlay">Transfer</a>
@@ -515,8 +533,7 @@
         <dd><input type="submit" value="Transfer Guild" class="button primary" /></dd>
     </dl>
 </xf:form>]]></template>
-  <template type="public" title="moturdrn_gw2guilds_view" version_id="2001170" version_string="2.0.11"><![CDATA[<xf:title>{$guild.guild_name} [{$guild.guild_tag}]</xf:title>
-<xf:breadcrumb href="{{ link('canonical:guilds') }}">Guilds</xf:breadcrumb>
+  <template type="public" title="moturdrn_gw2guilds_view" version_id="2001470" version_string="2.0.14"><![CDATA[<xf:title>{$guild.guild_name} [{$guild.guild_tag}]</xf:title>
 <xf:breadcrumb href="{{ link('canonical:guilds', $guild) }}">{$guild.guild_name} [{$guild.guild_tag}]</xf:breadcrumb>
 <xf:css src="moturdrn_gw2guilds_list.less" />
 <xf:css src="moturdrn_gw2guilds_list_mini.less" />
