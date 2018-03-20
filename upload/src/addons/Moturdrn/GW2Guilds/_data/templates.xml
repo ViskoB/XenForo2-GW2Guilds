@@ -1,133 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-  <template type="public" title="moturdrn_gw2guilds_add" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[<xf:title><xf:if is="$guild is not empty">{{ phrase('moturdrn_gw2guilds_edit_guild') }}: {$guild.guild_name}<xf:else />{{ phrase('moturdrn_gw2guilds_add_guild') }}</xf:if></xf:title>
+  <template type="public" title="moturdrn_gw2guilds_add" version_id="2002470" version_string="2.0.24"><![CDATA[<xf:title><xf:if is="$guild is not empty">{{ phrase('moturdrn_gw2guilds_edit_guild') }}: {$guild.guild_name}<xf:else />{{ phrase('moturdrn_gw2guilds_add_guild') }}</xf:if></xf:title>
 
-<div style="background-color: @contentBackground;">
-    <xf:form action="{{ link('guilds/save', $guild) }}" method="post" class="block">
+<xf:form action="{{ link('guilds/save', $guild) }}" method="post" class="block">
+<div class="block-container">
+    <div class="block-body">
         <xf:if is="!{$guild.guild_id}">
-            <fieldset>
-                <dl class="ctrlUnit titleUnit">
-                    <dt><label for="ctrl_title">Guild Name:</label></dt>
-                    <dd>
-                        <input type="text" name="guild_name" value="{$guild.guild_name}" class="textCtrl OptOut"
-                               data-liveTitleTemplate="{xf:if $guild.guild_id, 'Edit Guild', 'Add New Guild'}: <em>%s</em>"
-                               id="ctrl_title_team_add" maxlength="100"
-                        />
-                        <p class="explain">{{ phrase('moturdrn_gw2guilds_the_name_of_your_guild') }}</p>
-                    </dd>
-                </dl>
-
-                <dl class="ctrlUnit">
-                    <dt><label for="ctrl_tag_line">Guild Tag:</label></dt>
-                    <dd>
-                        <input type="text" name="guild_tag" value="{$guild.guild_tag}" class="textCtrl OptOut" id="ctrl_tag_line" maxlength="100" />
-                        <p class="explain">{{ phrase('moturdrn_gw2guilds_your_guilds_tag') }}</p>
-                    </dd>
-                </dl>
-
-                <dl class="ctrlUnit">
-                    <dt><label for="ctrl_tag_line">Website:</label></dt>
-                    <dd>
-                        <input type="text" name="guild_website" value="{$guild.guild_website}" class="textCtrl OptOut" id="ctrl_tag_line" maxlength="100" />
-                        <p class="explain">{{ phrase('moturdrn_gw2guilds_your_guilds_website') }}</p>
-                    </dd>
-                </dl>
-            </fieldset>
-            <xf:else />
-            <input type="hidden" name="guild_id" value="{$guild.guild_id}" />
-            <dl class="ctrlUnit">
-                <dt><label for="ctrl_tag_line">Website:</label></dt>
+            <dl class="formRow formRow--input formRow--fullWidth">
+                <dt>
+                    <div class="formRow-labelWrapper">
+                        <label class="formRow-label" for="guild_name">Guild Name</label>
+                    </div>
+                </dt>
                 <dd>
-                    <input type="text" name="guild_website" value="{$guild.guild_website}" class="textCtrl OptOut" id="ctrl_tag_line" maxlength="100" />
-                    <p class="explain">{{ phrase('moturdrn_gw2guilds_your_guilds_website') }}</p>
+                    <input type="text" name="guild_name" value="{$guild.guild_name}" class="textCtrl OptOut"
+                           data-liveTitleTemplate="{xf:if $guild.guild_id, 'Edit Guild', 'Add New Guild'}: <em>%s</em>"
+                           id="ctrl_title_team_add" maxlength="100"
+                    />
+                    <div class="formRow-explain">{{ phrase('moturdrn_gw2guilds_your_guilds_tag') }}</div>
+                </dd>
+            </dl>
+
+            <dl class="formRow formRow--input formRow--fullWidth">
+                <dt>
+                    <div class="formRow-labelWrapper">
+                        <label class="formRow-label" for="guild_tag">Guild Tag</label>
+                    </div>
+                </dt>
+                <dd>
+                    <input type="text" name="guild_tag" value="{$guild.guild_tag}" class="textCtrl OptOut" id="guild_tag" maxlength="100" />
+                    <div class="formRow-explain">{{ phrase('moturdrn_gw2guilds_your_guilds_tag') }}</div>
+                </dd>
+            </dl>
+
+            <dl class="formRow formRow--input formRow--fullWidth">
+                <dt>
+                    <div class="formRow-labelWrapper">
+                        <label class="formRow-label" for="guild_website">Website</label>
+                    </div>
+                </dt>
+                <dd>
+                    <input type="text" name="guild_website" value="{$guild.guild_website}" class="textCtrl OptOut" id="guild_website" maxlength="100" />
+                    <div class="formRow-explain">{{ phrase('moturdrn_gw2guilds_your_guilds_website') }}</div>
+                </dd>
+            </dl>
+        <xf:else />
+            <input type="hidden" name="guild_id" value="{$guild.guild_id}" />
+            <dl class="formRow formRow--input formRow--fullWidth">
+                <dt>
+                    <div class="formRow-labelWrapper">
+                        <label class="formRow-label" for="guild_website">Website</label>
+                    </div>
+                </dt>
+                <dd>
+                    <input type="text" name="guild_website" value="{$guild.guild_website}" class="textCtrl OptOut" id="guild_website" maxlength="100" />
+                    <div class="formRow-explain">{{ phrase('moturdrn_gw2guilds_your_guilds_website') }}</div>
                 </dd>
             </dl>
         </xf:if>
 
-        <fieldset>
-            <dl class="ctrlUnit">
-                <dt><label for="ctrl_message">Members:</label></dt>
-                <dd>
-                    <select name="members">
-                        <option value="1-50" <xf:if is="{$guild.members} == '1-50'">selected</xf:if>>1-50</option>
-                        <option value="51-100" <xf:if is="{$guild.members} == '51-100'">selected</xf:if>>51-100</option>
-                        <option value="101-150" <xf:if is="{$guild.members} == '101-150'">selected</xf:if>>101-150</option>
-                        <option value="151-200" <xf:if is="{$guild.members} == '151-200'">selected</xf:if>>151-200</option>
-                        <option value="201-250" <xf:if is="{$guild.members} == '201-250'">selected</xf:if>>201-250</option>
-                        <option value="251-300" <xf:if is="{$guild.members} == '251-300'">selected</xf:if>>251-300</option>
-                        <option value="301-350" <xf:if is="{$guild.members} == '301-350'">selected</xf:if>>301-350</option>
-                        <option value="351-400" <xf:if is="{$guild.members} == '351-400'">selected</xf:if>>351-400</option>
-                        <option value="401-450" <xf:if is="{$guild.members} == '401-450'">selected</xf:if>>401-450</option>
-                        <option value="451-500" <xf:if is="{$guild.members} == '451-500'">selected</xf:if>>451-500</option>
-                        <option value="501+" <xf:if is="{$guild.members} == '500+'">selected</xf:if>>500+</option>
-                    </select>
-                    <p class="explain">{{ phrase('moturdrn_gw2guilds_current_number_of_members') }}</p>
-                </dd>
-            </dl>
-        </fieldset>
-
-        <fieldset>
-            <dl class="ctrlUnit">
-                <dt><label for="ctrl_message">PvE:</label></dt>
-                <dd>
-                    No: <input type="radio" name="PvE" value="N" <xf:if is="{$guild.PvE} == 'N' || !{$guild.guild_id}">checked</xf:if> /> Yes: <input type="radio" name="PvE" value="Y" <xf:if is="{$guild.PvE} == 'Y'">checked</xf:if> />
-                </dd>
-            </dl>
-            <dl class="ctrlUnit">
-                <dt><label for="ctrl_message">PvP:</label></dt>
-                <dd>
-                    No: <input type="radio" name="PvP" value="N" <xf:if is="{$guild.PvP} == 'N' || !{$guild.guild_id}">checked</xf:if> /> Yes: <input type="radio" name="PvP" value="Y" <xf:if is="{$guild.PvP} == 'Y'">checked</xf:if> />
-                </dd>
-            </dl>
-            <dl class="ctrlUnit">
-                <dt><label for="ctrl_message">WvW:</label></dt>
-                <dd>
-                    No: <input type="radio" name="WvW" value="N" <xf:if is="{$guild.WvW} == 'N' || !{$guild.guild_id}">checked</xf:if> /> Yes: <input type="radio" name="WvW" value="Y" <xf:if is="{$guild.WvW} == 'Y'">checked</xf:if> />
-                </dd>
-            </dl>
-            <dl class="ctrlUnit">
-                <dt><label for="ctrl_message">Casual:</label></dt>
-                <dd>
-                    No: <input type="radio" name="Casual" value="N" <xf:if is="{$guild.Casual} == 'N' || !{$guild.guild_id}">checked</xf:if> /> Yes: <input type="radio" name="Casual" value="Y" <xf:if is="{$guild.Casual} == 'Y'">checked</xf:if> />
-                </dd>
-            </dl>
-        </fieldset>
-
-        <fieldset>
-            <dl class="ctrlUnit">
-                <dt><label for="ctrl_message">Recruitment/About:</label></dt>
-                <dd>
-                    <xf:editorrow label="{{ phrase('moturdrn_gw2guilds_provide_an_in_depth_description') }}" name="guild_recruitment" value="{$guild.guild_recruitment}" rowtype="fullWidth noLabel" />
-                    <p class="explain">{{ phrase('moturdrn_gw2guilds_provide_an_in_depth_description') }}</p>
-                </dd>
-            </dl>
-        </fieldset>
-
-        <dl class="ctrlUnit submitUnit">
-            <dt></dt>
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>
+                <div class="formRow-labelWrapper">
+                    <label class="formRow-label" for="members">Members</label>
+                </div>
+            </dt>
             <dd>
-                <input type="submit" value="{{ phrase('save') }}" class="button primary" accesskey="s" />
+                <select name="members" id="members">
+                    <option value="1-50" <xf:if is="{$guild.members} == '1-50'">selected</xf:if>>1-50</option>
+                    <option value="51-100" <xf:if is="{$guild.members} == '51-100'">selected</xf:if>>51-100</option>
+                    <option value="101-150" <xf:if is="{$guild.members} == '101-150'">selected</xf:if>>101-150</option>
+                    <option value="151-200" <xf:if is="{$guild.members} == '151-200'">selected</xf:if>>151-200</option>
+                    <option value="201-250" <xf:if is="{$guild.members} == '201-250'">selected</xf:if>>201-250</option>
+                    <option value="251-300" <xf:if is="{$guild.members} == '251-300'">selected</xf:if>>251-300</option>
+                    <option value="301-350" <xf:if is="{$guild.members} == '301-350'">selected</xf:if>>301-350</option>
+                    <option value="351-400" <xf:if is="{$guild.members} == '351-400'">selected</xf:if>>351-400</option>
+                    <option value="401-450" <xf:if is="{$guild.members} == '401-450'">selected</xf:if>>401-450</option>
+                    <option value="451-500" <xf:if is="{$guild.members} == '451-500'">selected</xf:if>>451-500</option>
+                    <option value="501+" <xf:if is="{$guild.members} == '500+'">selected</xf:if>>500+</option>
+                </select>
+                <div class="formRow-explain">{{ phrase('moturdrn_gw2guilds_current_number_of_members') }}</div>
             </dd>
         </dl>
-    </xf:form>
-</div>]]></template>
-  <template type="public" title="moturdrn_gw2guilds_delete" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[<xf:title>{{ phrase('moturdrn_gw2guilds_delete_guild') }}: {$guild.guild_name} [{$guild.guild_tag}]</xf:title>
-<xf:css src="moturdrn_gw2guilds_list.less" />
-<xf:css src="moturdrn_gw2guilds_list_mini.less" />
-<xf:form action="{{ link('guilds/delete', $guild) }}" method="post" class="block">
-    <dl class="ctrlUnit">
-        <dt>{{ phrase('moturdrn_gw2guilds_you_are_about_to_delete') }}</dt>
-        <dd>
-            <img src="<xf:callback class="Moturdrn\\GW2Guilds\\Listener" method="getEmblem" params="[{$guild.guild_name}]"></xf:callback>" />
-            <br />
-            {$guild.guild_name} [{$guild.guild_tag}]
-        </dd>
-    </dl>
 
-    <dl class="ctrlUnit submitUnit">
-        <dt></dt>
-        <dd><input type="submit" value="{{ phrase('moturdrn_gw2guilds_delete_guild') }}" class="button primary" /></dd>
-    </dl>
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>
+                <div class="formRow-labelWrapper">
+                    <label class="formRow-label" for="PvE">PvE</label>
+                </div>
+            </dt>
+            <dd>
+                No: <input type="radio" name="PvE" id="PvE" value="N" <xf:if is="{$guild.PvE} == 'N' || !{$guild.guild_id}">checked</xf:if> /> Yes: <input type="radio" name="PvE" id="PvE" value="Y" <xf:if is="{$guild.PvE} == 'Y'">checked</xf:if> />
+            </dd>
+        </dl>
+
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>
+                <div class="formRow-labelWrapper">
+                    <label class="formRow-label" for="PvP">PvP</label>
+                </div>
+            </dt>
+            <dd>
+                No: <input type="radio" name="PvP" id="PvP" value="N" <xf:if is="{$guild.PvP} == 'N' || !{$guild.guild_id}">checked</xf:if> /> Yes: <input type="radio" name="PvP" id="PvP" value="Y" <xf:if is="{$guild.PvP} == 'Y'">checked</xf:if> />
+            </dd>
+        </dl>
+
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>
+                <div class="formRow-labelWrapper">
+                    <label class="formRow-label" for="WvW">WvW</label>
+                </div>
+            </dt>
+            <dd>
+                No: <input type="radio" name="WvW" id="WvW" value="N" <xf:if is="{$guild.WvW} == 'N' || !{$guild.guild_id}">checked</xf:if> /> Yes: <input type="radio" name="WvW" id="WvW" value="Y" <xf:if is="{$guild.WvW} == 'Y'">checked</xf:if> />
+            </dd>
+        </dl>
+
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>
+                <div class="formRow-labelWrapper">
+                    <label class="formRow-label" for="Casual">Casual</label>
+                </div>
+            </dt>
+            <dd>
+                No: <input type="radio" name="Casual" id="Casual" value="N" <xf:if is="{$guild.Casual} == 'N' || !{$guild.guild_id}">checked</xf:if> /> Yes: <input type="radio" name="Casual" id="Casual" value="Y" <xf:if is="{$guild.Casual} == 'Y'">checked</xf:if> />
+            </dd>
+        </dl>
+
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>
+                <div class="formRow-labelWrapper">
+                    <label class="formRow-label" for="guild_recruitment">Recruitment/About</label>
+                </div>
+            </dt>
+            <dd>
+                <xf:editorrow label="{{ phrase('moturdrn_gw2guilds_provide_an_in_depth_description') }}" name="guild_recruitment" id="guild_recruitment" value="{$guild.guild_recruitment}" rowtype="fullWidth noLabel" />
+                <div class="formRow-explain">{{ phrase('moturdrn_gw2guilds_provide_an_in_depth_description') }}</div>
+            </dd>
+        </dl>
+
+        <dl class="formRow formSubmitRow formSubmitRow--sticky">
+            <dt></dt>
+            <dd>
+                <div class="formSubmitRow-main">
+                    <div class="formSubmitRow-bar"></div>
+                    <div class="formSubmitRow-controls">
+                        <button class="button button--primary button--icon button--icon--write"><span class="button-text">{{ phrase('save') }}</span></button>
+                    </div>
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>
+</xf:form>]]></template>
+  <template type="public" title="moturdrn_gw2guilds_delete" version_id="2002470" version_string="2.0.24"><![CDATA[<xf:title>{{ phrase('moturdrn_gw2guilds_delete_guild') }}: {$guild.guild_name} [{$guild.guild_tag}]</xf:title>
+
+<xf:form action="{{ link('guilds/delete', $guild) }}" method="post" class="block">
+<div class="block-container">
+    <div class="block-body">
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>{{ phrase('moturdrn_gw2guilds_you_are_about_to_delete') }}</dt>
+            <dd>
+                <img src="<xf:callback class="Moturdrn\\GW2Guilds\\Listener" method="getEmblem" params="[{$guild.guild_name}]"></xf:callback>" />
+                <div class="formRow-explain">{$guild.guild_name} [{$guild.guild_tag}]</div>
+            </dd>
+        </dl>
+
+        <dl class="formRow formSubmitRow formSubmitRow--sticky">
+            <dt></dt>
+            <dd>
+                <div class="formSubmitRow-main">
+                    <div class="formSubmitRow-bar"></div>
+                    <div class="formSubmitRow-controls">
+                        <button class="button button--primary button--icon button--icon--delete"><span class="button-text">{{ phrase('moturdrn_gw2guilds_delete_guild') }}</span></button>
+                    </div>
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>
 </xf:form>]]></template>
   <template type="public" title="moturdrn_gw2guilds_emblem" version_id="2000010" version_string="2.0.0 Alpha"><![CDATA[<img src="{$emblem_src}" />]]></template>
   <template type="public" title="moturdrn_gw2guilds_guild_list_pending_item" version_id="2000470" version_string="2.0.4"><![CDATA[<xf:macro name="guild_block" arg-guild="!">
@@ -156,7 +207,7 @@
         </div>
     </li>
 </xf:macro>]]></template>
-  <template type="public" title="moturdrn_gw2guilds_index" version_id="2001170" version_string="2.0.11"><![CDATA[<xf:title>Guilds</xf:title>
+  <template type="public" title="moturdrn_gw2guilds_index" version_id="2002370" version_string="2.0.23"><![CDATA[<xf:title>Guilds</xf:title>
 <xf:breadcrumb href="{{ link('canonical:guilds') }}">Guilds</xf:breadcrumb>
 <xf:pageaction>
     <xf:if is="$canCreate">
@@ -165,211 +216,177 @@
         </xf:button>
     </xf:if>
 </xf:pageaction>
-<xf:css src="moturdrn_gw2guilds_list.less" />
-<xf:css src="moturdrn_gw2guilds_list_mini.less" />
-<div class="GuildListBlock">
-    <div>
-        <xf:if is="$isGW2GuildsAdmin">
-            <xf:if is="$pendingGuilds is not empty">
-                <xf:css src="moturdrn_gw2guilds_member.less" />
-                <div class="memberListMain">
-                    <div class="section">
-                        <ol class="memberListItems">
-                            <li class="primaryContent">Pending Guild Requests</li>
-                            <xf:foreach loop="$pendingGuilds" value="$guild">
-                                <xf:macro template="moturdrn_gw2guilds_guild_list_pending_item" name="guild_block"
-                                          arg-guild="{$guild}"
-                                />
-                            </xf:foreach>
-                        </ol>
-                    </div>
+<xf:css src="structured_list.less" />
+<div class="block">
+    <xf:if is="$isGW2GuildsAdmin">
+        <xf:if is="$pendingGuilds is not empty">
+            <div class="block-container">
+                <div class="block-header">
+                    Pending Guilds
                 </div>
-            </xf:if>
+                <div class="block-body">
+                    <ul class="block-body js-newsFeedTarget">
+                    <xf:foreach loop="$pendingGuilds" value="$guild">
+                        <li class="block-row block-row--separated ">
+                            <div class="contentRow">
+                                <div class="contentRow-main">
+                                    <div class="contentRow-title">
+                                        <img src="<xf:callback class="Moturdrn\\GW2Guilds\\Listener" method="getEmblem" params="[{$guild.guild_name}]"></xf:callback>" /> <a name="guild-{$guild.guild_id}"></a><a href="{{link('canonical:guilds', $guild)}}" class="TeamIcon">{$guild.guild_name} [{$guild.guild_tag}]</a>
+                                    </div>
+                                    <span class="faint">{{ snippet($guild.guild_recruitment, 300, {'stripQuote': true}) }}</span>
+                                </div>
+                            </div>
+                        </li>
+                    </xf:foreach>
+                    </ul>
+                </div>
+            </div>
         </xf:if>
-        <ol class="guildList">
-            <xf:if is="$guilds is not empty">
-                <xf:foreach loop="$guilds" value="$guild">
-                    <xf:macro template="moturdrn_gw2guilds_list_item" name="guild_block"
-                              arg-guild="{$guild}"
-                    />
-                </xf:foreach>
-            <xf:else />
-                <li class="GuildListItem">No Guilds to Display!</li>
-            </xf:if>
-        </ol>
+    </xf:if>
+
+    <div class="block-container">
+        <div class="block-container">
+            <div class="block-header">
+                Guilds
+            </div>
+            <div class="block-body">
+                <div class="structItemContainer">
+                    <div class="structItemContainer-group structItemContainer-group--sticky">
+                    <xf:if is="$guilds is not empty">
+                        <xf:foreach loop="$guilds" value="$guild">
+                                <div class="structItem<xf:if is="$guild.status=='Inactive'"> is-deleted</xf:if>">
+                                    <div class="structItem-cell structItem-cell--icon">
+                                        <div class="structItem-iconContainer">
+                                            <a href="{{link('canonical:guilds', $guild)}}">
+                                                <img src="<xf:callback class="Moturdrn\\GW2Guilds\\Listener" method="getEmblem" params="[{$guild.guild_name}]"></xf:callback>" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="structItem-cell structItem-cell--main">
+                                        <a href="{{link('canonical:guilds', $guild)}}">{$guild.guild_name} [{$guild.guild_tag}]</a>
+                                        <div class="structItem-major">
+                                            <ul class="structItem-parts">
+                                                <li>
+                                                    <ul class="listInline listInline--selfInline">
+                                                        <xf:if is="{$guild.canEdit}">
+                                                            <xf:if is="{$guild.status} == 'Active' || {$guild.status} == 'Pending (Change)'">
+                                                                <li><xf:button href="{{ link('guilds/deactivate', $guild) }}" class="button--cta" icon="disable">
+                                                                    Set Inactive
+                                                                </xf:button></li>
+                                                            </xf:if>
+                                                            <xf:if is="{$guild.status} == 'Inactive'">
+                                                                <li><xf:button href="{{ link('guilds/activate', $guild) }}" class="button--cta" icon="confirm">
+                                                                    Set Active
+                                                                </xf:button></li>
+                                                            </xf:if>
+                                                        </xf:if>
+                                                        <xf:if is="$guild.canJoin">
+                                                            <li><xf:button href="{{ link('guilds/join', $guild) }}" class="button--cta">
+                                                                Join
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                        <xf:if is="$guild.canLeave">
+                                                            <li><xf:button href="{{ link('guilds/leave', $guild) }}" class="button--cta">
+                                                                Leave
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                        <xf:if is="$guild.canEdit">
+                                                            <li><xf:button href="{{ link('guilds/edit', $guild) }}" class="button--cta" icon="edit" data-xf-click="overlay">
+                                                                Edit
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                        <xf:if is="$guildPage != 'roster'">
+                                                            <li><xf:button href="{{ link('guilds/roster', $guild) }}" class="button--cta" icon="result">
+                                                                <span>Roster<xf:if is="{$guild.canEdit} && {$guild.pendingCount} > 0"> ({$guild.pendingCount})</xf:if></span>
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                        <xf:if is="$guild.canTransfer">
+                                                            <li><xf:button href="{{ link('guilds/transfer', $guild) }}" class="button--cta" icon="sort" data-xf-click="overlay">
+                                                                Transfer
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                        <xf:if is="$guild.canDelete">
+                                                            <li><xf:button href="{{ link('guilds/delete', $guild) }}" class="button--cta" icon="delete" data-xf-click="overlay">
+                                                                Delete
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        {{ snippet($guild.guild_recruitment, 300, {'stripQuote': true}) }}
+                                    </div>
+                                    <div class="structItem-cell structItem-cell--meta">
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>Members</dt>
+                                            <dd>{$guild.members}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>GH.eu Members</dt>
+                                            <dd>{$guild.memberCount}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>PvE</dt>
+                                            <dd>{$guild.PvE}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>PvP</dt>
+                                            <dd>{$guild.PvP}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>WvW</dt>
+                                            <dd>{$guild.WvW}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>Casual</dt>
+                                            <dd>{$guild.Casual}</dd>
+                                        </dl>
+                                        <xen:if is="{$guild.guild_website}">
+                                            <dl class="pairs pairs--justified structItem-minor">
+                                                <dt>Website</dt>
+                                                <dd><a href="{$guild.guild_website}">{$guild.guild_website}</a></dd>
+                                            </dl>
+                                        </xen:if>
+                                    </div>
+                            </div>
+                        </xf:foreach>
+                    </xf:if>
+                </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>]]></template>
-  <template type="public" title="moturdrn_gw2guilds_invite" version_id="2001470" version_string="2.0.14"><![CDATA[<xen:title>Transfer Guild: {$guild.guild_name} [{$guild.guild_tag}]</xen:title>
-<xf:breadcrumb href="{{ link('canonical:guilds') }}">Guilds</xf:breadcrumb>
-<xf:breadcrumb href="{{ link('canonical:guilds', $guild) }}">{$guild.guild_name} [{$guild.guild_tag}]</xf:breadcrumb>
-<xf:breadcrumb href="{{ link('canonical:guilds/transfer', $guild) }}">Transfer</xf:breadcrumb>
+  <template type="public" title="moturdrn_gw2guilds_invite" version_id="2002470" version_string="2.0.24"><![CDATA[<xf:title>Add Member: {$guild.guild_name} [{$guild.guild_tag}]</xf:title>
 
 <xf:form action="{{ link('guilds/invite', $guild) }}" class="block" attributes="{{ widget_data($widget, true) }}">
-	<div class="block-container">
-		<h3 class="block-minorHeader">{$title}</h3>
-		<div class="block-body block-row">
-			<label for="username">Enter a username below to add them to the Guild.</label>
-			<xf:textbox name="username" placeholder="{{ phrase('name...') }}" ac="single" data-autosubmit="true" autocomplete="off" />
-			<input type="submit" value="Add" class="button primary" accesskey="s" />
-		</div>
+<div class="block-container">
+	<div class="block-body">
+		<dl class="formRow formRow--input formRow--fullWidth">
+			<dt>
+				<div class="formRow-labelWrapper">
+					<label class="formRow-label" for="username">Enter a username below to add them to the Guild</label>
+				</div>
+			</dt>
+			<dd>
+				<xf:textbox name="username" placeholder="{{ phrase('name...') }}" ac="single" data-autosubmit="false" autocomplete="on" />
+			</dd>
+		</dl>
+
+		<dl class="formRow formSubmitRow formSubmitRow--sticky">
+			<dt></dt>
+			<dd>
+				<div class="formSubmitRow-main">
+					<div class="formSubmitRow-bar"></div>
+					<div class="formSubmitRow-controls">
+						<button class="button button--primary button--icon button--icon--sort"><span class="button-text">Add</span></button>
+					</div>
+				</div>
+			</dd>
+		</dl>
 	</div>
+</div>
 </xf:form>]]></template>
-  <template type="public" title="moturdrn_gw2guilds_list.less" version_id="2000010" version_string="2.0.0 Alpha"><![CDATA[.GuildListMain
-{
-    margin-left: 230px;
-}
-
-.GuildListItem
-{
-    display: table;
-    table-layout: fixed;
-    width: 100%;
-    word-wrap: normal;
-    border-bottom: xf-intensify(@xf-borderColor, 4%) 1px solid;
-    background-color: @xf-paletteNeutral1;
-}
-
-.GuildListItem .GuildListBlock
-{
-    display: table-cell;
-    vertical-align: middle;
-}
-
-.GuildListItem .GuildListBlockInner
-{
-    padding: 10px;
-}
-
-.GuildListItem .GuildEmblem
-{
-    width: 70px;
-}
-
-.GuildListItem .GuildEmblem .GuildListBlockInner
-{
-    padding: 5px;
-    position: relative;
-}
-
-.GuildListItem .GuildEmblem img.GuildIcon
-{
-    width: 64px;
-    height: 64px;
-}
-
-.GuildListItem .GuildMain
-{
-    width: auto;
-}
-
-.GuildListItem .GuildMain .title
-{
-    font-size: 11pt;
-    font-weight: bold;
-}
-
-.GuildListItem .GuildMain .guildTitle
-{
-    display: inline-block;
-}
-
-.GuildListItem .GuildMain .GuildDetails
-{
-    font-size: 11px;
-}
-
-.GuildListItem .GuildMain .tagLine
-{
-    font-size: 11px;
-    margin-top: .5em;
-}
-
-.GuildListBlock .GuildInfo
-{
-    width: 200px;
-    font-size: 11px;
-}
-
-.GuildListBlock .GuildInfo .GuildListBlockInner dl
-{
-    overflow: hidden;
-    line-height: 1.5;
-    margin: 0;
-    padding: 0;
-}
-
-.GuildListBlock .GuildInfo .GuildListBlockInner dt
-{
-    float: left;
-    max-width: 100%;
-    margin-right: 5px;
-}
-
-.GuildListBlock .GuildInfo .GuildListBlockInner dd
-{
-    float: right;
-    text-align: right;
-    max-width: 100%;
-}
-
-.GuildListItem.Inactive
-{
-    opacity: 0.4;
-    filter: alpha(opacity=1);
-}]]></template>
-  <template type="public" title="moturdrn_gw2guilds_list_item" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[<xf:macro name="guild_block" arg-guild="!" arg-guildPage="">
-    <li class="GuildListItem {$guild.status}" id="guild-{$guild.guild_id}">
-        <div class="GuildListBlock GuildEmblem">
-            <div class="GuildListBlockInner">
-                <img src="<xf:callback class="Moturdrn\\GW2Guilds\\Listener" method="getEmblem" params="[{$guild.guild_name}]"></xf:callback>" />
-            </div>
-        </div>
-        <div class="GuildListBlock GuildMain">
-            <div class="GuildListBlockInner">
-                <h3 class="title">
-                    <a name="guild-{$guild.guild_id}"></a><a href="{{link('canonical:guilds', $guild)}}" class="TeamIcon">{$guild.guild_name}</a>
-                    <div class="guildTitle">
-                        [{$guild.guild_tag}]
-                    </div>
-                </h3>
-                <xen:if is="{$guild.guild_website}">
-                    <div class="tagLine">
-                        <a href="{$guild.guild_website}">{$guild.guild_website}</a>
-                    </div>
-                </xen:if>
-                <div class="tagLine">
-                    {{
-                    snippet($guild.guild_recruitment, 300, {'stripQuote': true})
-                    }}
-                </div>
-                <xf:macro template="moturdrn_gw2guilds_macros" name="guild_buttons_block"
-                          arg-guild="{$guild}"
-                />
-            </div>
-        </div>
-        <div class="GuildListBlock GuildInfo">
-            <div class="GuildListBlockInner">
-                <dl><dt>Members:</dt> <dd>{$guild.members}</dd></dl>
-                <dl><dt>GH.eu Members:</dt> <dd>{$guild.memberCount}</dd></dl>
-                <dl><dt>PvE:</dt> <dd>{$guild.PvE}</dd></dl>
-                <dl><dt>PvP:</dt> <dd>{$guild.PvP}</dd></dl>
-                <dl><dt>WvW:</dt> <dd>{$guild.WvW}</dd></dl>
-                <dl><dt>Casual:</dt> <dd>{$guild.Casual}</dd></dl>
-                <dl><dt>Status:</dt> <dd>{$guild.status}</dd></dl>
-            </div>
-        </div>
-    </li>
-</xf:macro>]]></template>
-  <template type="public" title="moturdrn_gw2guilds_list_mini.less" version_id="2000010" version_string="2.0.0 Alpha"><![CDATA[.miniGuildList li
-{
-  margin-bottom: 1em;
-}
-
-.miniGuildList .guildTitle
-{
-  font-weight: bold;
-  margin-right: 5px;
-}]]></template>
   <template type="public" title="moturdrn_gw2guilds_macros" version_id="2001470" version_string="2.0.14"><![CDATA[<xf:macro name="guild_view_tabs" arg-guild="!" arg-guildPage="!">
     <div class="tabs tabs--standalone">
         <div class="hScroller" data-xf-init="h-scroller">
@@ -505,35 +522,56 @@
         </xf:if>
     </div>
 </xf:macro>]]></template>
-  <template type="public" title="moturdrn_gw2guilds_transfer" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[<xen:title>Transfer Guild: {$guild.guild_name} [{$guild.guild_tag}]</xen:title>
-<xf:breadcrumb href="{{ link('canonical:guilds') }}">Guilds</xf:breadcrumb>
-<xf:breadcrumb href="{{ link('canonical:guilds', $guild) }}">{$guild.guild_name} [{$guild.guild_tag}]</xf:breadcrumb>
-<xf:breadcrumb href="{{ link('canonical:guilds/transfer', $guild) }}">Transfer</xf:breadcrumb>
-
-<xf:css src="moturdrn_gw2guilds_list.less" />
-<xf:css src="moturdrn_gw2guilds_list_mini.less" />
+  <template type="public" title="moturdrn_gw2guilds_transfer" version_id="2002470" version_string="2.0.24"><![CDATA[<xf:title>Transfer Guild: {$guild.guild_name} [{$guild.guild_tag}]</xf:title>
 
 <xf:form action="{{ link('canonical:guilds/transfer', $guild) }}" method="post" class="block">
-    <dl class="ctrlUnit">
-        <dt>{{ phrase('moturdrn_gw2guilds_you_are_about_to_delete') }}</dt>
-        <dd>
-            <img src="<xf:callback class="Moturdrn\\GW2Guilds\\Listener" method="getEmblem" params="[{$guild.guild_name}]"></xf:callback>" />
-            <br />
-            {$guild.guild_name} [{$guild.guild_tag}]
-        </dd>
-    </dl>
-    <dl class="ctrlUnit">
-        <dt>Transfer to:</dt>
-        <dd><xf:textbox name="username" placeholder="{{ phrase('name...') }}" ac="single" data-autosubmit="false" autocomplete="off" /></dd>
-        <dt>Old Leader Status:</dt>
-        <dd>Officer <input type="radio" name="xferaction" value="Officer" checked /> Member <input type="radio" name="xferaction" value="Member" /> Remove <input type="radio" name="xferaction" value="Remove" /></dd>
-    </dl>
-    <dl class="ctrlUnit submitUnit">
-        <dt></dt>
-        <dd><input type="submit" value="Transfer Guild" class="button primary" /></dd>
-    </dl>
+<div class="block-container">
+    <div class="block-body">
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>{{ phrase('moturdrn_gw2guilds_you_are_about_to_transfer') }}</dt>
+            <dd>
+                <img src="<xf:callback class="Moturdrn\\GW2Guilds\\Listener" method="getEmblem" params="[{$guild.guild_name}]"></xf:callback>" />
+                <div class="formRow-explain">{$guild.guild_name} [{$guild.guild_tag}]</div>
+            </dd>
+        </dl>
+
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>
+                <div class="formRow-labelWrapper">
+                    <label class="formRow-label" for="username">Transfer to</label>
+                </div>
+            </dt>
+            <dd>
+                <xf:textbox name="username" id="username" placeholder="{{ phrase('name...') }}" ac="single" data-autosubmit="false" autocomplete="on" />
+            </dd>
+        </dl>
+
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>
+                <div class="formRow-labelWrapper">
+                    <label class="formRow-label" for="xferaction">Old Leader Status</label>
+                </div>
+            </dt>
+            <dd>
+                Officer <input type="radio" name="xferaction" id="xferaction" value="Officer" checked /> Member <input type="radio" name="xferaction" value="Member" /> Remove <input type="radio" name="xferaction" value="Remove" />
+            </dd>
+        </dl>
+
+        <dl class="formRow formSubmitRow formSubmitRow--sticky">
+            <dt></dt>
+            <dd>
+                <div class="formSubmitRow-main">
+                    <div class="formSubmitRow-bar"></div>
+                    <div class="formSubmitRow-controls">
+                        <button class="button button--primary button--icon button--icon--sort"><span class="button-text">Transfer Guild</span></button>
+                    </div>
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>
 </xf:form>]]></template>
-  <template type="public" title="moturdrn_gw2guilds_view" version_id="2001470" version_string="2.0.14"><![CDATA[<xf:title>{$guild.guild_name} [{$guild.guild_tag}]</xf:title>
+  <template type="public" title="moturdrn_gw2guilds_view" version_id="2001670" version_string="2.0.16"><![CDATA[<xf:title>{$guild.guild_name} [{$guild.guild_tag}]</xf:title>
 <xf:breadcrumb href="{{ link('canonical:guilds', $guild) }}">{$guild.guild_name} [{$guild.guild_tag}]</xf:breadcrumb>
 <xf:css src="moturdrn_gw2guilds_list.less" />
 <xf:css src="moturdrn_gw2guilds_list_mini.less" />
@@ -579,6 +617,12 @@
                     <dt>Status</dt>
                     <dd>{$guild.status}</dd>
                 </dl>
+                <xen:if is="{$guild.guild_website}">
+                    <dl class="pairs pairs--columns pairs--fixedSmall">
+                        <dt>Website</dt>
+                        <dd><a href="{$guild.guild_website}">{$guild.guild_website}</a></dd>
+                    </dl>
+                </xen:if>
             </div>
             <div class="block-row block-row--separated">
                 {{ bb_code($guild.guild_recruitment, "post", $guild) }}
