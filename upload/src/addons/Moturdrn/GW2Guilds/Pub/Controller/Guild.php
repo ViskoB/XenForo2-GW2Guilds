@@ -451,11 +451,14 @@ HTML;
     public function actionRoster(ParameterBag $parameterBag)
     {
         $guildRepo = $this->_getGuildRepo();
-        $guild = $guildRepo->getGuildByIdOrName($parameterBag->guild_id);
-        if(!$guild || !$guild = $this->assertGuildValid($guildId))
+        $guildId = $parameterBag->guild_id;
+
+        if(!$guildId && !$guild = $this->assertGuildValid($guildId))
         {
             return $this->redirect($this->buildLink('canonical:guilds'), 'Guild does not exist!');
         }
+
+        $guild = $guildRepo->getGuildByIdOrName($parameterBag->guild_id);
         //$guild = $this->prepareGuild($guild);
         $visitor = \XF::visitor();
         if(!$visitor['user_id']) {
