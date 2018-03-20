@@ -55,6 +55,7 @@ class Guild extends AbstractController
         $this->assertCanonicalUrl($this->buildLink('guilds', $guild));
 
         $viewParams = [
+            'guildPage' => '',
             'guild' => $guild,
         ];
         return $this->view('Moturdrn\GW2Guilds:View', 'moturdrn_gw2guilds_view', $viewParams);
@@ -506,6 +507,44 @@ HTML;
             }
         }
 
+        $array_lowercase = array_map('strtolower', array_keys($guildOfficers));
+        array_multisort(array_keys($array_lowercase), SORT_ASC, SORT_STRING, $guildOfficers);
+        $array_lowercase = array_map('strtolower', array_keys($guildMembers));
+        array_multisort($array_lowercase, SORT_ASC, SORT_STRING, $guildMembers);
+        $viewParams = array(
+            'guildPage' => 'roster',
+            'guild'	=> $guild,
+            'leader' => $guildLeader,
+            'officers' => $guildOfficers,
+            'members' => $guildMembers,
+            'showAccNames' => $showAccNames,
+            'Mini' => false,
+        );
+
+        return $this->view('Moturdrn\GW2Guilds:View', 'moturdrn_gw2guilds_view', $viewParams);
+    }
+
+    public function actionRequests(ParameterBag $parameterBag)
+    {
+        $guildRepo = $this->_getGuildRepo();
+        $guildId = $parameterBag->guild_id;
+
+        if(!$guildId && !$guild = $this->assertGuildValid($guildId))
+        {
+            return $this->redirect($this->buildLink('canonical:guilds'), 'Guild does not exist!');
+        }
+
+        $guild = $guildRepo->getGuildByIdOrName($parameterBag->guild_id);
+        //$guild = $this->prepareGuild($guild);
+        $visitor = \XF::visitor();
+        if(!$visitor['user_id']) {
+            $showAccNames = false;
+        }else{
+            $showAccNames = true;
+        }
+
+        $memberRepo = $this->_getMemberRepo();
+
         $pendingRequests = $this->_getMemberRepo()->getPendingJoinRequestsByGuildId($guild['guild_id']);
         $pendingMembers = array();
         foreach($pendingRequests as $pendingRequest)
@@ -524,23 +563,17 @@ HTML;
             $pendingMembers[$displayName] = $pendingMember;
         }
 
-        $array_lowercase = array_map('strtolower', array_keys($guildOfficers));
-        array_multisort(array_keys($array_lowercase), SORT_ASC, SORT_STRING, $guildOfficers);
-        $array_lowercase = array_map('strtolower', array_keys($guildMembers));
-        array_multisort($array_lowercase, SORT_ASC, SORT_STRING, $guildMembers);
         $array_lowercase = array_map('strtolower', array_keys($pendingMembers));
         array_multisort($array_lowercase, SORT_ASC, SORT_STRING, $pendingMembers);
         $viewParams = array(
+            'guildPage' => 'requests',
             'guild'	=> $guild,
-            'leader' => $guildLeader,
-            'officers' => $guildOfficers,
-            'members' => $guildMembers,
             'pending' => $pendingMembers,
             'showAccNames' => $showAccNames,
             'Mini' => false,
         );
 
-        return $this->view('Moturdrn\GW2Guilds:View', 'moturdrn_gw2guilds_roster', $viewParams);
+        return $this->view('Moturdrn\GW2Guilds:View', 'moturdrn_gw2guilds_view', $viewParams);
     }
 
     public function actionActivate(ParameterBag $parameterBag)
