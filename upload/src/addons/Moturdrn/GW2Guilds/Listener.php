@@ -27,13 +27,6 @@ class Listener
         return $src;
     }
 
-    public static function getEmblemSideNav($content, $guild_name)
-    {
-        $guildName = htmlspecialchars($guild_name[0]);
-        $src = "https://guilds.gw2w2w.com/guilds/{$guildName}/512.svg";
-        return $src;
-    }
-
     public static function getBanners($content, $user)
     {
         $output = "";

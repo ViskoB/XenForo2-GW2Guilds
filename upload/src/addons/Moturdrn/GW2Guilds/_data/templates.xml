@@ -355,7 +355,7 @@
   font-weight: bold;
   margin-right: 5px;
 }]]></template>
-  <template type="public" title="moturdrn_gw2guilds_macros" version_id="2001170" version_string="2.0.11"><![CDATA[<xf:macro name="guild_view_tabs" arg-guild="!" arg-guildPage="!">
+  <template type="public" title="moturdrn_gw2guilds_macros" version_id="2001370" version_string="2.0.13"><![CDATA[<xf:macro name="guild_view_tabs" arg-guild="!" arg-guildPage="!">
     <div class="tabs tabs--standalone">
         <div class="hScroller" data-xf-init="h-scroller">
             <span class="hScroller-scroll">
@@ -403,7 +403,7 @@
         <div class="block">
             <div class="GuildListBlock GuildEmblem">
                 <div class="GuildListBlockInner">
-                    <img src="<xf:callback class="Moturdrn\\GW2Guilds\\Listener" method="getEmblemSideNav" params="[{$guild.guild_name}]"></xf:callback>" width="100%" />
+                    <img src="<xf:callback class="Moturdrn\\GW2Guilds\\Listener" method="getEmblem" params="[{$guild.guild_name}]"></xf:callback>" width="100%" />
                 </div>
             </div>
         </div>

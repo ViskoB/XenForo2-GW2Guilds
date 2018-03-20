@@ -408,7 +408,6 @@ HTML;
         $memberEntity = \XF::em()->create('Moturdrn\GW2Guilds:Member');
         $memberEntity->set('guild_id', $guild['guild_id']);
         $memberEntity->set('user_id', $visitor['user_id']);
-        $memberEntity->set('username', $visitor['username']);
         $memberEntity->set('state', 'pending');
         $memberEntity->save();
 
