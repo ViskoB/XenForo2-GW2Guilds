@@ -1,0 +1,9 @@
+{
+    "template": "app_user_banners.less",
+    "description": "",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "str_replace",
+    "find": "&.userBanner--orange { .m-userBannerVariation(black, #ffcb00); }",
+    "replace": "$0\n&.userBanner--guild { .m-userBannerVariation(white, BlueViolet); }"
+}

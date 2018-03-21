@@ -1,0 +1,153 @@
+<xf:title><xf:if is="$guild is not empty">{{ phrase('moturdrn_gw2guilds_edit_guild') }}: {$guild.guild_name}<xf:else />{{ phrase('moturdrn_gw2guilds_add_guild') }}</xf:if></xf:title>
+
+<xf:form action="{{ link('guilds/save', $guild) }}" method="post" class="block">
+<div class="block-container">
+    <div class="block-body">
+        <xf:if is="!{$guild.guild_id}">
+            <dl class="formRow formRow--input formRow--fullWidth">
+                <dt>
+                    <div class="formRow-labelWrapper">
+                        <label class="formRow-label" for="guild_name">Guild Name</label>
+                    </div>
+                </dt>
+                <dd>
+                    <input type="text" name="guild_name" value="{$guild.guild_name}" class="textCtrl OptOut"
+                           data-liveTitleTemplate="{xf:if $guild.guild_id, 'Edit Guild', 'Add New Guild'}: <em>%s</em>"
+                           id="ctrl_title_team_add" maxlength="100"
+                    />
+                    <div class="formRow-explain">{{ phrase('moturdrn_gw2guilds_your_guilds_tag') }}</div>
+                </dd>
+            </dl>
+
+            <dl class="formRow formRow--input formRow--fullWidth">
+                <dt>
+                    <div class="formRow-labelWrapper">
+                        <label class="formRow-label" for="guild_tag">Guild Tag</label>
+                    </div>
+                </dt>
+                <dd>
+                    <input type="text" name="guild_tag" value="{$guild.guild_tag}" class="textCtrl OptOut" id="guild_tag" maxlength="100" />
+                    <div class="formRow-explain">{{ phrase('moturdrn_gw2guilds_your_guilds_tag') }}</div>
+                </dd>
+            </dl>
+
+            <dl class="formRow formRow--input formRow--fullWidth">
+                <dt>
+                    <div class="formRow-labelWrapper">
+                        <label class="formRow-label" for="guild_website">Website</label>
+                    </div>
+                </dt>
+                <dd>
+                    <input type="text" name="guild_website" value="{$guild.guild_website}" class="textCtrl OptOut" id="guild_website" maxlength="100" />
+                    <div class="formRow-explain">{{ phrase('moturdrn_gw2guilds_your_guilds_website') }}</div>
+                </dd>
+            </dl>
+        <xf:else />
+            <input type="hidden" name="guild_id" value="{$guild.guild_id}" />
+            <dl class="formRow formRow--input formRow--fullWidth">
+                <dt>
+                    <div class="formRow-labelWrapper">
+                        <label class="formRow-label" for="guild_website">Website</label>
+                    </div>
+                </dt>
+                <dd>
+                    <input type="text" name="guild_website" value="{$guild.guild_website}" class="textCtrl OptOut" id="guild_website" maxlength="100" />
+                    <div class="formRow-explain">{{ phrase('moturdrn_gw2guilds_your_guilds_website') }}</div>
+                </dd>
+            </dl>
+        </xf:if>
+
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>
+                <div class="formRow-labelWrapper">
+                    <label class="formRow-label" for="members">Members</label>
+                </div>
+            </dt>
+            <dd>
+                <select name="members" id="members">
+                    <option value="1-50" <xf:if is="{$guild.members} == '1-50'">selected</xf:if>>1-50</option>
+                    <option value="51-100" <xf:if is="{$guild.members} == '51-100'">selected</xf:if>>51-100</option>
+                    <option value="101-150" <xf:if is="{$guild.members} == '101-150'">selected</xf:if>>101-150</option>
+                    <option value="151-200" <xf:if is="{$guild.members} == '151-200'">selected</xf:if>>151-200</option>
+                    <option value="201-250" <xf:if is="{$guild.members} == '201-250'">selected</xf:if>>201-250</option>
+                    <option value="251-300" <xf:if is="{$guild.members} == '251-300'">selected</xf:if>>251-300</option>
+                    <option value="301-350" <xf:if is="{$guild.members} == '301-350'">selected</xf:if>>301-350</option>
+                    <option value="351-400" <xf:if is="{$guild.members} == '351-400'">selected</xf:if>>351-400</option>
+                    <option value="401-450" <xf:if is="{$guild.members} == '401-450'">selected</xf:if>>401-450</option>
+                    <option value="451-500" <xf:if is="{$guild.members} == '451-500'">selected</xf:if>>451-500</option>
+                    <option value="501+" <xf:if is="{$guild.members} == '500+'">selected</xf:if>>500+</option>
+                </select>
+                <div class="formRow-explain">{{ phrase('moturdrn_gw2guilds_current_number_of_members') }}</div>
+            </dd>
+        </dl>
+
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>
+                <div class="formRow-labelWrapper">
+                    <label class="formRow-label" for="PvE">PvE</label>
+                </div>
+            </dt>
+            <dd>
+                No: <input type="radio" name="PvE" id="PvE" value="N" <xf:if is="{$guild.PvE} == 'N' || !{$guild.guild_id}">checked</xf:if> /> Yes: <input type="radio" name="PvE" id="PvE" value="Y" <xf:if is="{$guild.PvE} == 'Y'">checked</xf:if> />
+            </dd>
+        </dl>
+
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>
+                <div class="formRow-labelWrapper">
+                    <label class="formRow-label" for="PvP">PvP</label>
+                </div>
+            </dt>
+            <dd>
+                No: <input type="radio" name="PvP" id="PvP" value="N" <xf:if is="{$guild.PvP} == 'N' || !{$guild.guild_id}">checked</xf:if> /> Yes: <input type="radio" name="PvP" id="PvP" value="Y" <xf:if is="{$guild.PvP} == 'Y'">checked</xf:if> />
+            </dd>
+        </dl>
+
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>
+                <div class="formRow-labelWrapper">
+                    <label class="formRow-label" for="WvW">WvW</label>
+                </div>
+            </dt>
+            <dd>
+                No: <input type="radio" name="WvW" id="WvW" value="N" <xf:if is="{$guild.WvW} == 'N' || !{$guild.guild_id}">checked</xf:if> /> Yes: <input type="radio" name="WvW" id="WvW" value="Y" <xf:if is="{$guild.WvW} == 'Y'">checked</xf:if> />
+            </dd>
+        </dl>
+
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>
+                <div class="formRow-labelWrapper">
+                    <label class="formRow-label" for="Casual">Casual</label>
+                </div>
+            </dt>
+            <dd>
+                No: <input type="radio" name="Casual" id="Casual" value="N" <xf:if is="{$guild.Casual} == 'N' || !{$guild.guild_id}">checked</xf:if> /> Yes: <input type="radio" name="Casual" id="Casual" value="Y" <xf:if is="{$guild.Casual} == 'Y'">checked</xf:if> />
+            </dd>
+        </dl>
+
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>
+                <div class="formRow-labelWrapper">
+                    <label class="formRow-label" for="guild_recruitment">Recruitment/About</label>
+                </div>
+            </dt>
+            <dd>
+                <xf:editorrow label="{{ phrase('moturdrn_gw2guilds_provide_an_in_depth_description') }}" name="guild_recruitment" id="guild_recruitment" value="{$guild.guild_recruitment}" rowtype="fullWidth noLabel" />
+                <div class="formRow-explain">{{ phrase('moturdrn_gw2guilds_provide_an_in_depth_description') }}</div>
+            </dd>
+        </dl>
+
+        <dl class="formRow formSubmitRow formSubmitRow--sticky">
+            <dt></dt>
+            <dd>
+                <div class="formSubmitRow-main">
+                    <div class="formSubmitRow-bar"></div>
+                    <div class="formSubmitRow-controls">
+                        <button class="button button--primary button--icon button--icon--write"><span class="button-text">{{ phrase('save') }}</span></button>
+                    </div>
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>
+</xf:form>

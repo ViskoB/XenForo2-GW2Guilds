@@ -1,0 +1,222 @@
+<xf:title>Guilds</xf:title>
+<xf:breadcrumb href="{{ link('canonical:guilds') }}">Guilds</xf:breadcrumb>
+<xf:pageaction>
+    <xf:if is="$canCreate">
+        <xf:button href="{{ link('guilds/add') }}" class="button--cta" data-xf-click="overlay" icon="add">
+            Add Guild
+        </xf:button>
+    </xf:if>
+</xf:pageaction>
+<xf:css src="structured_list.less" />
+<div class="block">
+    <xf:if is="$isGW2GuildsAdmin">
+        <xf:if is="$pendingGuilds is not empty">
+            <div class="block-container">
+                <div class="block-header">
+                    Pending Guilds
+                </div>
+                <div class="block-body">
+                    <div class="structItemContainer">
+                        <div class="structItemContainer-group structItemContainer-group--sticky">
+                            <xf:foreach loop="$pendingGuilds" value="$guild">
+                                <div class="structItem">
+                                    <div class="structItem-cell structItem-cell--icon">
+                                        <div class="structItem-iconContainer">
+                                            <a href="{{link('canonical:guilds', $guild)}}">
+                                                <img src="<xf:callback class="Moturdrn\\GW2Guilds\\Listener" method="getEmblem" params="[{$guild.guild_name}]"></xf:callback>" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="structItem-cell structItem-cell--main">
+                                        <a href="{{link('canonical:guilds', $guild)}}">{$guild.guild_name} [{$guild.guild_tag}]</a>
+                                        <div class="structItem-major">
+                                            <ul class="structItem-parts">
+                                                <li>
+                                                    <ul class="listInline listInline--selfInline">
+                                                        <xf:if is="{$guild.status} == 'Pending (Change)'">
+                                                            <li><a href="{{ link('guilds/activate', $guild) }}" class="OverlayTrigger"><span class="control promote">Set Active</span></a></li>
+                                                            <li><a href="{{link('guilds/deactivate',$guild)}}" class="OverlayTrigger removeLink"><span class="control remove">Set Inactive</span></a></li>
+                                                            <xf:else />
+                                                            <li><a href="{{link('guilds/activate',$guild)}}" class="OverlayTrigger"><span class="control promote">Set Active</span></a></li>
+                                                            <li><a href="{{link('guilds/delete',$guild)}}" class="OverlayTrigger removeLink"><span class="control remove">Delete</span></a></li>
+                                                        </xf:if>
+                                                        <xf:if is="$guild.canJoin">
+                                                            <li><xf:button href="{{ link('guilds/join', $guild) }}" class="button--cta">
+                                                                Join
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                        <xf:if is="$guild.canLeave">
+                                                            <li><xf:button href="{{ link('guilds/leave', $guild) }}" class="button--cta">
+                                                                Leave
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                        <xf:if is="$guild.canEdit">
+                                                            <li><xf:button href="{{ link('guilds/edit', $guild) }}" class="button--cta" icon="edit" data-xf-click="overlay">
+                                                                Edit
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                        <xf:if is="$guildPage != 'roster'">
+                                                            <li><xf:button href="{{ link('guilds/roster', $guild) }}" class="button--cta" icon="result">
+                                                                <span>Roster<xf:if is="{$guild.canEdit} && {$guild.pendingCount} > 0"> ({$guild.pendingCount})</xf:if></span>
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        {{ snippet($guild.guild_recruitment, 300, {'stripQuote': true}) }}
+                                    </div>
+                                    <div class="structItem-cell structItem-cell--meta">
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>Members</dt>
+                                            <dd>{$guild.members}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>GH.eu Members</dt>
+                                            <dd>{$guild.memberCount}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>PvE</dt>
+                                            <dd>{$guild.PvE}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>PvP</dt>
+                                            <dd>{$guild.PvP}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>WvW</dt>
+                                            <dd>{$guild.WvW}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>Casual</dt>
+                                            <dd>{$guild.Casual}</dd>
+                                        </dl>
+                                        <xen:if is="{$guild.guild_website}">
+                                            <dl class="pairs pairs--justified structItem-minor">
+                                                <dt>Website</dt>
+                                                <dd><a href="{$guild.guild_website}">{$guild.guild_website}</a></dd>
+                                            </dl>
+                                        </xen:if>
+                                    </div>
+                                </div>
+                            </xf:foreach>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xf:if>
+    </xf:if>
+
+    <div class="block-container">
+        <div class="block-container">
+            <div class="block-header">
+                Guilds
+            </div>
+            <div class="block-body">
+                <div class="structItemContainer">
+                    <div class="structItemContainer-group structItemContainer-group--sticky">
+                    <xf:if is="$guilds is not empty">
+                        <xf:foreach loop="$guilds" value="$guild">
+                                <div class="structItem<xf:if is="$guild.status=='Inactive'"> is-deleted</xf:if>">
+                                    <div class="structItem-cell structItem-cell--icon">
+                                        <div class="structItem-iconContainer">
+                                            <a href="{{link('canonical:guilds', $guild)}}">
+                                                <img src="<xf:callback class="Moturdrn\\GW2Guilds\\Listener" method="getEmblem" params="[{$guild.guild_name}]"></xf:callback>" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="structItem-cell structItem-cell--main">
+                                        <a href="{{link('canonical:guilds', $guild)}}">{$guild.guild_name} [{$guild.guild_tag}]</a>
+                                        <div class="structItem-major">
+                                            <ul class="structItem-parts">
+                                                <li>
+                                                    <ul class="listInline listInline--selfInline">
+                                                        <xf:if is="{$guild.canEdit}">
+                                                            <xf:if is="{$guild.status} == 'Active' || {$guild.status} == 'Pending (Change)'">
+                                                                <li><xf:button href="{{ link('guilds/deactivate', $guild) }}" class="button--cta" icon="disable">
+                                                                    Set Inactive
+                                                                </xf:button></li>
+                                                            </xf:if>
+                                                            <xf:if is="{$guild.status} == 'Inactive'">
+                                                                <li><xf:button href="{{ link('guilds/activate', $guild) }}" class="button--cta" icon="confirm">
+                                                                    Set Active
+                                                                </xf:button></li>
+                                                            </xf:if>
+                                                        </xf:if>
+                                                        <xf:if is="$guild.canJoin">
+                                                            <li><xf:button href="{{ link('guilds/join', $guild) }}" class="button--cta">
+                                                                Join
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                        <xf:if is="$guild.canLeave">
+                                                            <li><xf:button href="{{ link('guilds/leave', $guild) }}" class="button--cta">
+                                                                Leave
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                        <xf:if is="$guild.canEdit">
+                                                            <li><xf:button href="{{ link('guilds/edit', $guild) }}" class="button--cta" icon="edit" data-xf-click="overlay">
+                                                                Edit
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                        <xf:if is="$guildPage != 'roster'">
+                                                            <li><xf:button href="{{ link('guilds/roster', $guild) }}" class="button--cta" icon="result">
+                                                                <span>Roster<xf:if is="{$guild.canEdit} && {$guild.pendingCount} > 0"> ({$guild.pendingCount})</xf:if></span>
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                        <xf:if is="$guild.canTransfer">
+                                                            <li><xf:button href="{{ link('guilds/transfer', $guild) }}" class="button--cta" icon="sort" data-xf-click="overlay">
+                                                                Transfer
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                        <xf:if is="$guild.canDelete">
+                                                            <li><xf:button href="{{ link('guilds/delete', $guild) }}" class="button--cta" icon="delete" data-xf-click="overlay">
+                                                                Delete
+                                                            </xf:button></li>
+                                                        </xf:if>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        {{ snippet($guild.guild_recruitment, 300, {'stripQuote': true}) }}
+                                    </div>
+                                    <div class="structItem-cell structItem-cell--meta">
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>Members</dt>
+                                            <dd>{$guild.members}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>GH.eu Members</dt>
+                                            <dd>{$guild.memberCount}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>PvE</dt>
+                                            <dd>{$guild.PvE}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>PvP</dt>
+                                            <dd>{$guild.PvP}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>WvW</dt>
+                                            <dd>{$guild.WvW}</dd>
+                                        </dl>
+                                        <dl class="pairs pairs--justified structItem-minor">
+                                            <dt>Casual</dt>
+                                            <dd>{$guild.Casual}</dd>
+                                        </dl>
+                                        <xen:if is="{$guild.guild_website}">
+                                            <dl class="pairs pairs--justified structItem-minor">
+                                                <dt>Website</dt>
+                                                <dd><a href="{$guild.guild_website}">{$guild.guild_website}</a></dd>
+                                            </dl>
+                                        </xen:if>
+                                    </div>
+                            </div>
+                        </xf:foreach>
+                    </xf:if>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

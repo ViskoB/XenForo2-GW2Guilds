@@ -1,0 +1,30 @@
+<xf:title>Add Member: {$guild.guild_name} [{$guild.guild_tag}]</xf:title>
+
+<xf:form action="{{ link('guilds/invite', $guild) }}" class="block" attributes="{{ widget_data($widget, true) }}">
+<div class="block-container">
+	<div class="block-body">
+		<dl class="formRow formRow--input formRow--fullWidth">
+			<dt>
+				<div class="formRow-labelWrapper">
+					<label class="formRow-label" for="username">Enter a username below to add them to the Guild</label>
+				</div>
+			</dt>
+			<dd>
+				<xf:textbox name="username" placeholder="{{ phrase('name...') }}" ac="single" data-autosubmit="false" autocomplete="on" />
+			</dd>
+		</dl>
+
+		<dl class="formRow formSubmitRow formSubmitRow--sticky">
+			<dt></dt>
+			<dd>
+				<div class="formSubmitRow-main">
+					<div class="formSubmitRow-bar"></div>
+					<div class="formSubmitRow-controls">
+						<button class="button button--primary button--icon button--icon--sort"><span class="button-text">Add</span></button>
+					</div>
+				</div>
+			</dd>
+		</dl>
+	</div>
+</div>
+</xf:form>

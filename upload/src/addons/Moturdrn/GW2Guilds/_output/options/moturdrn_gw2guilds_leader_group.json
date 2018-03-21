@@ -1,0 +1,12 @@
+{
+    "edit_format": "callback",
+    "edit_format_params": "XF\\Option\\UserGroup::renderSelect",
+    "data_type": "integer",
+    "sub_options": [],
+    "validation_class": "",
+    "validation_method": "",
+    "default_value": "0",
+    "relations": {
+        "moturdrn_gw2guilds": 4
+    }
+}

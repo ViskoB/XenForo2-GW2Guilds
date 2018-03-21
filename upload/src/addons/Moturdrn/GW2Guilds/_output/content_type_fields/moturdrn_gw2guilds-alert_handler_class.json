@@ -1,0 +1,5 @@
+{
+    "content_type": "moturdrn_gw2guilds",
+    "field_name": "alert_handler_class",
+    "field_value": "Moturdrn\\GW2Guilds\\Alert\\Guild"
+}

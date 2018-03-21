@@ -1,0 +1,157 @@
+<xf:title>{$guild.guild_name} [{$guild.guild_tag}]</xf:title>
+<xf:breadcrumb href="{{ link('canonical:guilds', $guild) }}">{$guild.guild_name} [{$guild.guild_tag}]</xf:breadcrumb>
+
+<xf:macro template="moturdrn_gw2guilds_macros" name="guild_view_sidenav"
+          arg-guild="{$guild}"
+/>
+
+<xf:macro template="moturdrn_gw2guilds_macros" name="guild_view_tabs"
+          arg-guild="{$guild}"
+          arg-guildPage="{$guildPage}"
+/>
+
+<xf:if is="$guildPage==''">
+<div class="block">
+    <div class="block-container">
+        <div class="block-body">
+            <div class="block-row block-row--separated">
+                <dl class="pairs pairs--columns pairs--fixedSmall">
+                    <dt>Members</dt>
+                    <dd>{$guild.members}</dd>
+                </dl>
+                <dl class="pairs pairs--columns pairs--fixedSmall">
+                    <dt>GH.eu Members</dt>
+                    <dd>{$guild.memberCount}</dd>
+                </dl>
+                <dl class="pairs pairs--columns pairs--fixedSmall">
+                    <dt>PvE</dt>
+                    <dd>{$guild.PvE}</dd>
+                </dl>
+                <dl class="pairs pairs--columns pairs--fixedSmall">
+                    <dt>PvP</dt>
+                    <dd>{$guild.PvP}</dd>
+                </dl>
+                <dl class="pairs pairs--columns pairs--fixedSmall">
+                    <dt>WvW</dt>
+                    <dd>{$guild.WvW}</dd>
+                </dl>
+                <dl class="pairs pairs--columns pairs--fixedSmall">
+                    <dt>Casual</dt>
+                    <dd>{$guild.Casual}</dd>
+                </dl>
+                <dl class="pairs pairs--columns pairs--fixedSmall">
+                    <dt>Status</dt>
+                    <dd>{$guild.status}</dd>
+                </dl>
+                <xen:if is="{$guild.guild_website}">
+                    <dl class="pairs pairs--columns pairs--fixedSmall">
+                        <dt>Website</dt>
+                        <dd><a href="{$guild.guild_website}">{$guild.guild_website}</a></dd>
+                    </dl>
+                </xen:if>
+            </div>
+            <div class="block-row block-row--separated">
+                {{ bb_code($guild.guild_recruitment, "post", $guild) }}
+            </div>
+        </div>
+    </div>
+</div>
+</xf:if>
+
+<xf:if is="$guildPage=='roster'">
+    <div class="block">
+        <div class="block-container">
+            <div class="block-header">
+                Guild Leader
+            </div>
+            <div class="block-body">
+                <ul class="block-body js-newsFeedTarget">
+                    <xf:if is="$leader is not empty">
+                        <xf:foreach loop="$leader" value="$user">
+                            <xf:macro template="moturdrn_gw2guilds_macros" name="member_block"
+                                      arg-user="{$user}"
+                                      arg-guild="{$guild}"
+                                      arg-memberType="leader"
+                            />
+                        </xf:foreach>
+                    <xf:else />
+                        <li class="block-row block-row--separated ">
+                            No Guild Officers
+                        </li>
+                    </xf:if>
+                </ul>
+            </div>
+        </div>
+        <div class="block-container">
+            <div class="block-header">
+                Guild Officers
+            </div>
+            <div class="block-body">
+                <ul class="block-body js-newsFeedTarget">
+                    <xf:if is="$officers is not empty">
+                        <xf:foreach loop="$officers" value="$user">
+                            <xf:macro template="moturdrn_gw2guilds_macros" name="member_block"
+                                      arg-user="{$user}"
+                                      arg-guild="{$guild}"
+                                      arg-memberType="officer"
+                            />
+                        </xf:foreach>
+                    <xf:else />
+                        <li class="block-row block-row--separated ">
+                            There are no Guild Officers
+                        </li>
+                    </xf:if>
+                </ul>
+            </div>
+        </div>
+        <div class="block-container">
+            <div class="block-header">
+                Guild Members
+            </div>
+            <div class="block-body">
+                <li class="block-body js-newsFeedTarget">
+                    <xf:if is="$members is not empty">
+                        <xf:foreach loop="$members" value="$user">
+                            <xf:macro template="moturdrn_gw2guilds_macros" name="member_block"
+                                      arg-user="{$user}"
+                                      arg-guild="{$guild}"
+                                      arg-memberType="member"
+                            />
+                        </xf:foreach>
+                        <xf:else />
+                        <li class="block-row block-row--separated ">
+                            There are no Guild Members
+                        </li>
+                    </xf:if>
+                </ul>
+            </div>
+        </div>
+    </div>
+</xf:if>
+
+<xf:if is="$guildPage=='requests'">
+    <div class="block">
+        <div class="block-container">
+            <div class="block-header">
+                Join Requests
+            </div>
+            <div class="block-body">
+                <ul class="block-body js-newsFeedTarget">
+                    <xf:if is="$pending is not empty">
+                        <xf:foreach loop="$pending" value="$user">
+                            <xf:macro template="moturdrn_gw2guilds_macros" name="member_block"
+                                      arg-user="{$user}"
+                                      arg-guild="{$guild}"
+                                      arg-memberType="pending"
+                            />
+                        </xf:foreach>
+                        <xf:else />
+                        <li class="block-row block-row--separated ">
+                            No Join Requests
+                        </li>
+                    </xf:if>
+                </ul>
+            </div>
+        </div>
+    </div>
+</xf:if>

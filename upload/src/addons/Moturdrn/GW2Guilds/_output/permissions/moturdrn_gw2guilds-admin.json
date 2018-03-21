@@ -1,0 +1,6 @@
+{
+    "permission_type": "flag",
+    "interface_group_id": "moturdrn_gw2guilds",
+    "display_order": 1,
+    "depend_permission_id": ""
+}

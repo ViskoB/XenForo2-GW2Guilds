@@ -1,0 +1,9 @@
+{
+    "template": "message_macros",
+    "description": "",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "str_replace",
+    "find": "<xf:userbanners user=\"$user\" tag=\"div\" class=\"message-userBanner\" itemprop=\"jobTitle\" />",
+    "replace": "$0\n<xf:callback class=\"Moturdrn\\\\GW2Guilds\\\\Listener\" method=\"getBanners\" params=\"[$user.user_id]\"></xf:callback>"
+}

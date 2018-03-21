@@ -1,0 +1,27 @@
+<xf:title>{{ phrase('moturdrn_gw2guilds_delete_guild') }}: {$guild.guild_name} [{$guild.guild_tag}]</xf:title>
+
+<xf:form action="{{ link('guilds/delete', $guild) }}" method="post" class="block">
+<div class="block-container">
+    <div class="block-body">
+        <dl class="formRow formRow--input formRow--fullWidth">
+            <dt>{{ phrase('moturdrn_gw2guilds_you_are_about_to_delete') }}</dt>
+            <dd>
+                <img src="<xf:callback class="Moturdrn\\GW2Guilds\\Listener" method="getEmblem" params="[{$guild.guild_name}]"></xf:callback>" />
+                <div class="formRow-explain">{$guild.guild_name} [{$guild.guild_tag}]</div>
+            </dd>
+        </dl>
+
+        <dl class="formRow formSubmitRow formSubmitRow--sticky">
+            <dt></dt>
+            <dd>
+                <div class="formSubmitRow-main">
+                    <div class="formSubmitRow-bar"></div>
+                    <div class="formSubmitRow-controls">
+                        <button class="button button--primary button--icon button--icon--delete"><span class="button-text">{{ phrase('moturdrn_gw2guilds_delete_guild') }}</span></button>
+                    </div>
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>
+</xf:form>

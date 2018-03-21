@@ -1,0 +1,5 @@
+{
+    "content_type": "guild",
+    "field_name": "sitemap_handler_class",
+    "field_value": "Moturdrn\\GW2Guilds\\Sitemap\\Guild"
+}

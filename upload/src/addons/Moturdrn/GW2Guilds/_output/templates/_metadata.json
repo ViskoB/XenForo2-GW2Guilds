@@ -1,0 +1,67 @@
+{
+    "public/moturdrn_gw2guilds_add.html": {
+        "version_id": 2002470,
+        "version_string": "2.0.24",
+        "hash": "28bd993482bb0ba1889f14f01cd17487"
+    },
+    "public/moturdrn_gw2guilds_delete.html": {
+        "version_id": 2002470,
+        "version_string": "2.0.24",
+        "hash": "535932dfe38e08b82c2005b3c11a99d5"
+    },
+    "public/moturdrn_gw2guilds_emblem.html": {
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "ce509c3b71743dbdc22bb3858f69898f"
+    },
+    "public/moturdrn_gw2guilds_guild_list_pending_item.html": {
+        "version_id": 2000470,
+        "version_string": "2.0.4",
+        "hash": "b8666e450c039515fe5a85044e004e70"
+    },
+    "public/moturdrn_gw2guilds_index.html": {
+        "version_id": 2002670,
+        "version_string": "2.0.26",
+        "hash": "8451c19d5b2da62a63b202e8315161fe"
+    },
+    "public/moturdrn_gw2guilds_invite.html": {
+        "version_id": 2002470,
+        "version_string": "2.0.24",
+        "hash": "19a660781cdec82c6a294cbb89623c75"
+    },
+    "public/moturdrn_gw2guilds_list_item.html": {
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "caf4412ba2007d37a55c54c9bc1035bc"
+    },
+    "public/moturdrn_gw2guilds_macros.html": {
+        "version_id": 2001470,
+        "version_string": "2.0.14",
+        "hash": "853d035bbaae1d137c2916286f9d3120"
+    },
+    "public/moturdrn_gw2guilds_member.less": {
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "d630cf04d25fb23922655eeaf1cb1e60"
+    },
+    "public/moturdrn_gw2guilds_member_list_item.html": {
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "8cb82a110190837ad334ec78dd3ecf3d"
+    },
+    "public/moturdrn_gw2guilds_roster.html": {
+        "version_id": 2001170,
+        "version_string": "2.0.11",
+        "hash": "a87432d182b40c2e47cb77a456e0321a"
+    },
+    "public/moturdrn_gw2guilds_transfer.html": {
+        "version_id": 2002470,
+        "version_string": "2.0.24",
+        "hash": "d97decb892464104328f418a7158bf0c"
+    },
+    "public/moturdrn_gw2guilds_view.html": {
+        "version_id": 2002870,
+        "version_string": "2.0.28",
+        "hash": "d4aa3256b36188f03c9ff7e427135943"
+    }
+}

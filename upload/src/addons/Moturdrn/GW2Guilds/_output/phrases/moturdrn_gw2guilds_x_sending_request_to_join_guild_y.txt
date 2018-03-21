@@ -1,0 +1,1 @@
+{user} sending request to join Guild {title}

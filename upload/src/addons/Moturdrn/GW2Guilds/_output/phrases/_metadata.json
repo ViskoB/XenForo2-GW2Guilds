@@ -1,0 +1,224 @@
+{
+    "alert_opt_out.moturdrn_gw2guilds_changeguild.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "a47b74b136c8f67f38c06f867bf1122d"
+    },
+    "alert_opt_out.moturdrn_gw2guilds_joinreq.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "5855884b03525f0875dcae017ad886e2"
+    },
+    "alert_opt_out.moturdrn_gw2guilds_newguild.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "53f6470db484b7508af57bf98e6e1ef1"
+    },
+    "moturdrn_gw2guilds_add_guild.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "6e8f63c52613193516340d4045f9ea95"
+    },
+    "moturdrn_gw2guilds_current_number_of_members.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "547d13e87c16871f8a46cd4108285706"
+    },
+    "moturdrn_gw2guilds_delete_guild.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "7900cd5bd698cc556c1382c18fd7b1fb"
+    },
+    "moturdrn_gw2guilds_edit_guild.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "4e60a363661e9e410e3a0e1ef3684a6b"
+    },
+    "moturdrn_gw2guilds_guilds.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "c5514110f8f4e8873da17c6c2b7b2b8e"
+    },
+    "moturdrn_gw2guilds_no_guilds_to_display.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "e76ba8d0a048442c610441445cc6b606"
+    },
+    "moturdrn_gw2guilds_provide_an_in_depth_description.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "cda891308ca318a3bbee54d5b0ce209c"
+    },
+    "moturdrn_gw2guilds_the_name_of_your_guild.txt": {
+        "global_cache": true,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "9c6204ad88af052bc5cf38339f87ddbf"
+    },
+    "moturdrn_gw2guilds_transfer_guild.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "3ef49772f982730cd26321fa8d37f8ce"
+    },
+    "moturdrn_gw2guilds_x_created_guild_y.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "1b23e40bb39aab98580c4870e5f3a028"
+    },
+    "moturdrn_gw2guilds_x_requests_guild_y_active.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "e0de855ceb6000c5a089c8bd66c8f57c"
+    },
+    "moturdrn_gw2guilds_x_sending_request_to_join_guild_y.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "1338b7bc34af46a259b91bf9b2292cfc"
+    },
+    "moturdrn_gw2guilds_you_are_about_to_delete.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "44ba543ffcfa8bb735a3b5b77ab9ad85"
+    },
+    "moturdrn_gw2guilds_you_are_about_to_transfer.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "6d83c5cc7d3fc616fdee3a8179cb4905"
+    },
+    "moturdrn_gw2guilds_your_guilds_tag.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "60a6e5bf74e710829178069c976f634d"
+    },
+    "moturdrn_gw2guilds_your_guilds_website.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "515567b379dc66b9d85a7c5e465d0bd8"
+    },
+    "nav.guilds.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "c5514110f8f4e8873da17c6c2b7b2b8e"
+    },
+    "nav.guilds_add.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "6e8f63c52613193516340d4045f9ea95"
+    },
+    "nav.guilds_all.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "d645cc98245f0b60a1f8fe51347c0bde"
+    },
+    "nav.guilds_mine.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "59f8c7a5aa710af53353c0b9c8b7c67c"
+    },
+    "option.moturdrn_gw2guilds_apply_leader_group.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "60f9d74647908029060d100f739f7456"
+    },
+    "option.moturdrn_gw2guilds_apply_member_group.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "0af7e5f5af520ad181d23f18993fe628"
+    },
+    "option.moturdrn_gw2guilds_leader_group.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "527f5627f9727ca1672cd8d7654de4e2"
+    },
+    "option.moturdrn_gw2guilds_member_group.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "fba4801281c3e0fb03b06986935de8a4"
+    },
+    "option_explain.moturdrn_gw2guilds_apply_leader_group.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "060bd4159ece09a6fd6b3bb06e61b87d"
+    },
+    "option_explain.moturdrn_gw2guilds_apply_member_group.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "6ee4cae9c20b2b7ee5222a9e2f933308"
+    },
+    "option_explain.moturdrn_gw2guilds_leader_group.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "6881ed3bc2663278b5b66aeb995c258e"
+    },
+    "option_explain.moturdrn_gw2guilds_member_group.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "7fc8a39e90a71c20e1488a1a904a9186"
+    },
+    "option_group.moturdrn_gw2guilds.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "3e781254c33fc82c7054d13a3d296d5b"
+    },
+    "option_group_description.moturdrn_gw2guilds.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "permission.moturdrn_gw2guilds_admin.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "2e15e99f6c9a7aa94c6f7706681d8ccf"
+    },
+    "permission.moturdrn_gw2guilds_createguild.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "a60830e45b224f469433f90f1a38fe96"
+    },
+    "permission.moturdrn_gw2guilds_joinguild.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "394ae315d821785b475f42b4e93d8065"
+    },
+    "permission_interface.moturdrn_gw2guilds.txt": {
+        "global_cache": false,
+        "version_id": 2000310,
+        "version_string": "2.0.3 Alpha",
+        "hash": "3e781254c33fc82c7054d13a3d296d5b"
+    }
+}

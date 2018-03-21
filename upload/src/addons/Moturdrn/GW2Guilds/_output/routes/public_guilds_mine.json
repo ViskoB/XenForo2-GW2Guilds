@@ -1,0 +1,11 @@
+{
+    "route_type": "public",
+    "route_prefix": "guilds",
+    "sub_name": "mine",
+    "format": "guilds/mine",
+    "build_class": "",
+    "build_method": "",
+    "controller": "Moturdrn\\GW2Guilds:Guild",
+    "context": "guilds",
+    "action_prefix": "mine"
+}

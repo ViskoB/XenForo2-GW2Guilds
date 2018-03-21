@@ -1,0 +1,11 @@
+{
+    "parent_navigation_id": "guilds",
+    "display_order": 1,
+    "navigation_type_id": "basic",
+    "type_config": {
+        "link": "{{ link('guilds') }}",
+        "display_condition": "",
+        "extra_attributes": []
+    },
+    "enabled": true
+}

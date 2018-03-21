@@ -1,0 +1,1 @@
+Should Users be added/removed from a specific User Group when joining/leaving Guilds?

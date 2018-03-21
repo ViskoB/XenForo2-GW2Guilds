@@ -1,0 +1,135 @@
+<xf:macro name="guild_view_tabs" arg-guild="!" arg-guildPage="!">
+    <div class="tabs tabs--standalone">
+        <div class="hScroller" data-xf-init="h-scroller">
+            <span class="hScroller-scroll">
+                <!--[XF:tabs:start]-->
+				<a href="{{ link('guilds', $guild) }}" class="tabs-tab {{ $guildPage == '' ? 'is-active' : '' }}">Information</a>
+				<a href="{{ link('guilds/roster', $guild) }}" class="tabs-tab {{ $guildPage == 'roster' ? 'is-active' : '' }}">Roster</a>
+                <xf:if is="{$guild.canEdit}"><a href="{{ link('guilds/requests', $guild) }}" class="tabs-tab {{ $guildPage == 'requests' ? 'is-active' : '' }}">Join Requests</a></xf:if>
+                <!--[XF:tabs:end]-->
+            </span>
+        </div>
+    </div>
+</xf:macro>
+
+<xf:macro name="member_block" arg-guild="!" arg-user="!" arg-memberType="!">
+    <li class="block-row block-row--separated ">
+        <div class="contentRow">
+            <div class="contentRow-main">
+                <div class="contentRow-title">
+                    <xf:username user="$user.user" />
+                </div>
+                <xf:if is="$user.user.user_id != $xf.visitor.user_id && $memberType != 'leader'">
+                    <xf:if is="$memberType == 'officer' && $guild.accessLevel >= 40">
+                        <a href="{{ link('guilds/members/demote', $guild, { 'user_id': $user.user.user_id }) }}"><span class="control promote">Demote to Member</span></a>
+                    </xf:if>
+                    <xf:if is="$memberType == 'pending' && $guild.accessLevel >= 30">
+                        <a href="{{ link('guilds/members/promote', $guild, { 'user_id': $user.user.user_id }) }}"><span class="control promote">Promote to Member</span></a> |
+                        <a href="{{ link('guilds/members/remove', $guild, { 'user_id': $user.user.user_id }) }}" class="removeLink"><span class="control remove">Remove</span></a>
+                    </xf:if>
+                    <xf:if is="$memberType == 'member' && $guild.accessLevel >= 30">
+                        <xf:if is="$guild.accessLevel >= 40">
+                            <a href="{{ link('guilds/members/promote', $guild, { 'user_id': $user.user.user_id }) }}"><span class="control promote">Promote to Officer</span></a> |
+                        </xf:if>
+                        <a href="{{ link('guilds/members/remove', $guild, { 'user_id': $user.user.user_id }) }}" class="removeLink"><span class="control remove">Remove</span></a>
+                    </xf:if>
+                    <br />
+                </xf:if>
+                <span class="faint">Last Active: <xf:date time="{$user.user.last_activity}" /></span>
+            </div>
+        </div>
+    </li>
+</xf:macro>
+
+<xf:macro name="guild_view_sidenav" arg-guild="!">
+    <xf:sidenav>
+        <div class="block">
+            <div class="GuildListBlock GuildEmblem">
+                <div class="GuildListBlockInner">
+                    <img src="<xf:callback class="Moturdrn\\GW2Guilds\\Listener" method="getEmblem" params="[{$guild.guild_name}]"></xf:callback>" width="100%" />
+                </div>
+            </div>
+        </div>
+        <div class="block">
+            <div class="block-container">
+                <div class="block-header">
+                    Guild Actions
+                </div>
+                <div class="block-body">
+                    <xf:if is="{$guild.canEdit}">
+                        <xf:if is="{$guild.status} == 'Active' || {$guild.status} == 'Pending (Change)'">
+                            <a href="{{ link('guilds/deactivate', $guild) }}" class="blockLink" data-xf-click="overlay">Set Inactive</a>
+                        </xf:if>
+                        <xf:if is="{$guild.status} == 'Inactive'">
+                            <a href="{{ link('guilds/activate', $guild) }}" class="blockLink" data-xf-click="overlay">Set Active</a>
+                        </xf:if>
+                    </xf:if>
+                    <xf:if is="$guild.canJoin">
+                        <a href="{{ link('guilds/join', $guild) }}" class="blockLink">Join</a>
+                    </xf:if>
+                    <xf:if is="$guild.canLeave">
+                        <a href="{{ link('guilds/leave', $guild) }}" class="blockLink">Leave</a>
+                    </xf:if>
+                    <xf:if is="$guild.canEdit">
+                        <a href="{{ link('guilds/edit', $guild) }}" class="blockLink" data-xf-click="overlay">Edit</a>
+                    </xf:if>
+                    <xf:if is="$guild.accessLevel >= 30">
+                        <a href="{{ link('guilds/invite', $guild) }}" class="blockLink" data-xf-click="overlay">Add Member</a>
+                    </xf:if>
+                    <xf:if is="$guild.canTransfer">
+                        <a href="{{ link('guilds/transfer', $guild) }}" class="blockLink" data-xf-click="overlay">Transfer</a>
+                    </xf:if>
+                    <xf:if is="$guild.canDelete">
+                        <a href="{{ link('guilds/delete', $guild) }}" class="blockLink" data-xf-click="overlay">Delete</a>
+                    </xf:if>
+                </div>
+            </div>
+        </div>
+    </xf:sidenav>
+</xf:macro>
+<xf:macro name="guild_buttons_block" arg-guild="!" arg-guildPage="">
+    <div class="tagLine">
+        <xf:if is="{$guild.canEdit}">
+            <xf:if is="{$guild.status} == 'Active' || {$guild.status} == 'Pending (Change)'">
+                <xf:button href="{{ link('guilds/deactivate', $guild) }}" class="button--cta" icon="disable">
+                    Set Inactive
+                </xf:button>
+            </xf:if>
+            <xf:if is="{$guild.status} == 'Inactive'">
+                <xf:button href="{{ link('guilds/activate', $guild) }}" class="button--cta" icon="confirm">
+                    Set Active
+                </xf:button>
+            </xf:if>
+        </xf:if>
+        <xf:if is="$guild.canJoin">
+            <xf:button href="{{ link('guilds/join', $guild) }}" class="button--cta">
+                Join
+            </xf:button>
+        </xf:if>
+        <xf:if is="$guild.canLeave">
+            <xf:button href="{{ link('guilds/leave', $guild) }}" class="button--cta">
+                Leave
+            </xf:button>
+        </xf:if>
+        <xf:if is="$guild.canEdit">
+            <xf:button href="{{ link('guilds/edit', $guild) }}" class="button--cta" icon="edit" data-xf-click="overlay">
+                Edit
+            </xf:button>
+        </xf:if>
+        <xf:if is="$guildPage != 'roster'">
+            <xf:button href="{{ link('guilds/roster', $guild) }}" class="button--cta" icon="result" data-xf-click="overlay">
+                <span>Roster<xf:if is="{$guild.canEdit} && {$guild.pendingCount} > 0"> ({$guild.pendingCount})</xf:if></span>
+            </xf:button>
+        </xf:if>
+        <xf:if is="$guild.canTransfer">
+            <xf:button href="{{ link('guilds/transfer', $guild) }}" class="button--cta" icon="sort" data-xf-click="overlay">
+                Transfer
+            </xf:button>
+        </xf:if>
+        <xf:if is="$guild.canDelete">
+            <xf:button href="{{ link('guilds/delete', $guild) }}" class="button--cta" icon="delete" data-xf-click="overlay">
+                Delete
+            </xf:button>
+        </xf:if>
+    </div>
+</xf:macro>

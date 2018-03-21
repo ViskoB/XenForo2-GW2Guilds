@@ -1,0 +1,1 @@
+{user} has requested Guild {title} be made active
