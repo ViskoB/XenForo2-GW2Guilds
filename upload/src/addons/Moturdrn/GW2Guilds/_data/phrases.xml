@@ -22,6 +22,7 @@
   <phrase title="nav.guilds" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Guilds]]></phrase>
   <phrase title="nav.guilds_add" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Add Guild]]></phrase>
   <phrase title="nav.guilds_all" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[All Guilds]]></phrase>
+  <phrase title="nav.guilds_mine" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[My Guilds]]></phrase>
   <phrase title="option.moturdrn_gw2guilds_apply_leader_group" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Apply Guild Leader User Group]]></phrase>
   <phrase title="option.moturdrn_gw2guilds_apply_member_group" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Apply Guild Member User Group]]></phrase>
   <phrase title="option.moturdrn_gw2guilds_leader_group" version_id="2000310" version_string="2.0.3 Alpha"><![CDATA[Guild Leader User Group]]></phrase>

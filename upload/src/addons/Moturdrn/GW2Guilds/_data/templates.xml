@@ -616,7 +616,7 @@
     </div>
 </div>
 </xf:form>]]></template>
-  <template type="public" title="moturdrn_gw2guilds_view" version_id="2002870" version_string="2.0.28"><![CDATA[<xf:title>{$guild.guild_name} [{$guild.guild_tag}]</xf:title>
+  <template type="public" title="moturdrn_gw2guilds_view" version_id="2002970" version_string="2.0.29"><![CDATA[<xf:title>{$guild.guild_name} [{$guild.guild_tag}]</xf:title>
 <xf:breadcrumb href="{{ link('canonical:guilds', $guild) }}">{$guild.guild_name} [{$guild.guild_tag}]</xf:breadcrumb>
 
 <xf:macro template="moturdrn_gw2guilds_macros" name="guild_view_sidenav"
@@ -727,7 +727,7 @@
                 Guild Members
             </div>
             <div class="block-body">
-                <li class="block-body js-newsFeedTarget">
+                <ul class="block-body js-newsFeedTarget">
                     <xf:if is="$members is not empty">
                         <xf:foreach loop="$members" value="$user">
                             <xf:macro template="moturdrn_gw2guilds_macros" name="member_block"
