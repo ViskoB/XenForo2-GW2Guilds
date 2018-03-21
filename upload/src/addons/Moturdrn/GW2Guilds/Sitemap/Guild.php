@@ -24,7 +24,7 @@ class Guild extends AbstractHandler
 
     public function getEntry($record)
     {
-        $url = $this->app->router('public')->buildLink('canonical:guilds', $record);
+        $url = $this->app->router('public')->buildLink('guilds', $record);
         return Entry::create($url, [
             'lastmod' => $record->last_modified
         ]);

@@ -451,12 +451,22 @@ HTML;
         $guildRepo = $this->_getGuildRepo();
         $guildId = $parameterBag->guild_id;
 
-        if(!$guildId && !$guild = $this->assertGuildValid($guildId))
+        $guildExists = false;
+
+        if($guildId && $guild = $this->assertGuildValid($guildId))
+        {
+            $guildExists = true;
+        }elseif($guildId){
+            $guildExists = false;
+        }
+
+        if(!$guildExists)
         {
             return $this->redirect($this->buildLink('canonical:guilds'), 'Guild does not exist!');
         }
 
         $guild = $guildRepo->getGuildByIdOrName($parameterBag->guild_id);
+        $this->assertCanonicalUrl($this->buildLink('guilds/roster', $guild));
         //$guild = $this->prepareGuild($guild);
         $visitor = \XF::visitor();
         if(!$visitor['user_id']) {
@@ -526,12 +536,22 @@ HTML;
         $guildRepo = $this->_getGuildRepo();
         $guildId = $parameterBag->guild_id;
 
-        if(!$guildId && !$guild = $this->assertGuildValid($guildId))
+        $guildExists = false;
+
+        if($guildId && $guild = $this->assertGuildValid($guildId))
+        {
+            $guildExists = true;
+        }elseif($guildId){
+            $guildExists = false;
+        }
+
+        if(!$guildExists)
         {
             return $this->redirect($this->buildLink('canonical:guilds'), 'Guild does not exist!');
         }
 
         $guild = $guildRepo->getGuildByIdOrName($parameterBag->guild_id);
+        $this->assertCanonicalUrl($this->buildLink('guilds/requests', $guild));
         //$guild = $this->prepareGuild($guild);
         $visitor = \XF::visitor();
         if(!$visitor['user_id']) {
